@@ -85,12 +85,12 @@
 import 'dart:io';
 
 import 'package:assisted_living/responsive/responsive.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../services/app_colors.dart';
-import '../../services/strings.dart';
 import '../widgets/avatar_picker.dart';
 import '../widgets/custom_appbar.dart';
 import '../widgets/custom_dropdown_widget.dart';
@@ -140,10 +140,10 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         title: CustomTextWidget(
-          Strings.addMember,
-          style: Theme.of(
-            context,
-          ).textTheme.rTitleMedium(context)!.copyWith(color: AppColors.btnTextColor),
+          "addMember.addMember".tr(),
+          style: Theme.of(context).textTheme
+              .rTitleMedium(context)!
+              .copyWith(color: AppColors.btnTextColor),
         ),
         foregroundColor: AppColors.btnTextColor,
         gradient: const LinearGradient(
@@ -177,13 +177,21 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                               file: _avatarFile,
                               badgeColor: AppColors.appBarColor,
                               onTap: () async {
-                                final f = await ImagePickerHelper.pickImageWithSheet(context);
+                                final f =
+                                    await ImagePickerHelper.pickImageWithSheet(
+                                      context,
+                                    );
                                 if (!mounted) return;
                                 if (f != null) setState(() => _avatarFile = f);
                               },
                             ),
-                            SizedBox(height: r.px(20),),
-                            CustomTextWidget('Add profile picture', style: Theme.of(context).textTheme.rDisplayMedium(context)!,)
+                            SizedBox(height: r.px(20)),
+                            CustomTextWidget(
+                              'Add profile picture',
+                              style: Theme.of(
+                                context,
+                              ).textTheme.rDisplayMedium(context)!,
+                            ),
                           ],
                         ),
                         // child: Stack(
@@ -241,9 +249,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                         key: const Key('NameField'),
                         padding: 0,
                         enabled: true,
-                        labelText: Strings.fullName,
+                        labelText: "addMember.fullName".tr(),
                         height: r.px(43),
-                        hintText: Strings.fullNameLabel,
+                        hintText: "addMember.hintFullNameText".tr(),
                         maxLines: 1,
                         numericKeyboard: false,
                         textInputAction: TextInputAction.next,
@@ -304,13 +312,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                         error: null,
                         dataList: _relations,
                         enabled: true,
-                        hintText: Strings.hintRelationText,
-                        labelText: Strings.hintLabelText,
+                        hintText: "addMember.hintRelationText".tr(),
+                        labelText: "addMember.hintLabelText".tr(),
                         onChange: (val) {
                           setState(() {
                             _relation = val;
                             if (_relation != 'Others') {
-                              _otherRelationCtrl.clear(); // clear when switching away
+                              _otherRelationCtrl
+                                  .clear(); // clear when switching away
                             }
                           });
                           // FocusScope.of(context).unfocus();
@@ -333,7 +342,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                           textInputAction: TextInputAction.done,
                           textInputType: TextInputType.text,
                           isRequired: true,
-                          inputFormatter: [LengthLimitingTextInputFormatter(30)],
+                          inputFormatter: [
+                            LengthLimitingTextInputFormatter(30),
+                          ],
                           onChanged: (_) => setState(() {}),
                         ),
                       ],
@@ -343,7 +354,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
 
                       CustomButton(
                         key: const Key('saveContinueBtn'),
-                        buttonText: Strings.save,
+                        buttonText: "addMember.save".tr(),
                         isValid: false,
                         onClick: () {
                           FocusScope.of(context).unfocus();

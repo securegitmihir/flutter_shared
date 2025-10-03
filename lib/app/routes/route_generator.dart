@@ -25,6 +25,7 @@ class RouteGenerator {
               // orientations: const [DeviceOrientation.portraitUp],
               // child:
               SplashScreen(),
+          settings: const RouteSettings(name: AppRoutes.splash),
           // ),
         );
       case AppRoutes.login:
@@ -34,10 +35,14 @@ class RouteGenerator {
               // orientations: const [DeviceOrientation.portraitUp],
               // child:
               LoginScreen(),
+          settings: const RouteSettings(name: AppRoutes.login),
           // ),
         );
       case AppRoutes.profileSetup:
-        return MaterialPageRoute(builder: (_) => ProfileSetup());
+        return MaterialPageRoute(
+          builder: (_) => ProfileSetup(),
+          settings: const RouteSettings(name: AppRoutes.profileSetup),
+        );
       case AppRoutes.dashboard:
         final args = settings.arguments as Map<String, dynamic>;
         final username = args['username'] ?? '';
@@ -47,23 +52,45 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>
               MainDashboardScreen(username: username, gender: gender),
+          settings: const RouteSettings(name: AppRoutes.dashboard),
         );
       case AppRoutes.terms:
-        return MaterialPageRoute(builder: (_) => TermsScreen());
+        return MaterialPageRoute(
+          builder: (_) => TermsScreen(),
+          settings: const RouteSettings(name: AppRoutes.terms),
+        );
       case AppRoutes.privacy:
-        return MaterialPageRoute(builder: (_) => PrivacyPolicyScreen());
+        return MaterialPageRoute(
+          builder: (_) => PrivacyPolicyScreen(),
+          settings: const RouteSettings(name: AppRoutes.privacy),
+        );
       case AppRoutes.about:
-        return MaterialPageRoute(builder: (_) => AboutScreen());
+        return MaterialPageRoute(
+          builder: (_) => AboutScreen(),
+          settings: const RouteSettings(name: AppRoutes.about),
+        );
       case AppRoutes.help:
-        return MaterialPageRoute(builder: (_) => HelpSupportScreen());
+        return MaterialPageRoute(
+          builder: (_) => HelpSupportScreen(),
+          settings: const RouteSettings(name: AppRoutes.help),
+        );
       // case AppRoutes.contactUs:
       //   return MaterialPageRoute(builder: (_) => ContactUsScreen());
       case AppRoutes.feedback:
-        return MaterialPageRoute(builder: (_) => FeedbackScreen());
+        return MaterialPageRoute(
+          builder: (_) => FeedbackScreen(),
+          settings: const RouteSettings(name: AppRoutes.feedback),
+        );
       case AppRoutes.addMember:
-        return MaterialPageRoute(builder: (_) => AddMemberScreen());
+        return MaterialPageRoute(
+          builder: (_) => AddMemberScreen(),
+          settings: const RouteSettings(name: AppRoutes.addMember),
+        );
       case AppRoutes.language:
-        return MaterialPageRoute(builder: (_) => LanguageSelectorScreen());
+        return MaterialPageRoute(
+          builder: (_) => LanguageSelectorScreen(),
+          settings: const RouteSettings(name: AppRoutes.language),
+        );
       default:
         return _errorRoute();
     }

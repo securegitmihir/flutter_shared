@@ -75,19 +75,19 @@ void main() async {
         ],
         child: ChangeNotifierProvider(
           create: (_) => ThemeState(),
-          child: EasyLocalization(
-            supportedLocales: const [Locale('en'), Locale('hi')],
-            fallbackLocale: const Locale('en'),
-            startLocale: savedLang != null ? Locale(savedLang) : null,
-            assetLoader: NetworkAssetLoader(
-              LanguageRepository(LanguageDataProvider()),
-            ),
-            path: 'unused',
-            child: ChangeNotifierProvider(
-              create: (_) => LanguageState(),
-              child: Consumer<LanguageState>(
-                builder: (context, value, child) => const MyApp(),
+          child: ChangeNotifierProvider(
+            create: (_) => LanguageState(),
+            child: EasyLocalization(
+              supportedLocales: const [Locale('en'), Locale('hi')],
+              fallbackLocale: const Locale('en'),
+              startLocale: savedLang != null
+                  ? Locale(savedLang)
+                  : const Locale('en'),
+              assetLoader: NetworkAssetLoader(
+                LanguageRepository(LanguageDataProvider()),
               ),
+              path: 'unused',
+              child: const MyApp(),
             ),
           ),
         ),

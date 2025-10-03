@@ -4,12 +4,12 @@ import 'dart:math' as math;
 import 'package:assisted_living/presentation/widgets/custom_appbar.dart';
 import 'package:assisted_living/presentation/widgets/custom_text_widget.dart';
 import 'package:assisted_living/responsive/responsive.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../app/routes/app_routes.dart';
 import '../../services/app_colors.dart';
-import '../../services/strings.dart';
 import '../widgets/avatar_picker.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/image_picker_helper.dart';
@@ -52,6 +52,11 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     setState(() {
       _versionLabel = '${info.version}.${info.buildNumber}';
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -171,7 +176,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     _SectionTitle('General'),
                     _NavTile(
                       icon: Icons.add,
-                      label: Strings.addMember,
+                      label: "drawer.addMember".tr(),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.addMember);
@@ -179,26 +184,28 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     ),
                     _NavTile(
                       icon: Icons.note_alt_sharp,
-                      label: Strings.diary,
+                      label: "drawer.diary".tr(),
                       onTap: () => Navigator.pop(context),
                     ),
                     _NavTile(
                       icon: Icons.settings,
-                      label: Strings.settings,
+                      label: "drawer.settings".tr(),
                       onTap: () => Navigator.pop(context),
                     ),
                     _NavTile(
                       icon: Icons.language,
-                      label: Strings.language,
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.language),
+                      label: "drawer.language".tr(),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, AppRoutes.language);
+                      },
                     ),
                     const Divider(height: 16),
 
                     _SectionTitle('Support'),
                     _NavTile(
                       icon: Icons.feedback,
-                      label: Strings.feedback,
+                      label: "drawer.feedback".tr(),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.feedback);
@@ -206,7 +213,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     ),
                     _NavTile(
                       icon: Icons.phone,
-                      label: Strings.contactUs,
+                      label: "drawer.contactUs".tr(),
                       onTap: () {
                         Navigator.pop(context);
                         PhoneDialer.dial(context, '9166005226');
@@ -214,7 +221,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     ),
                     _NavTile(
                       icon: Icons.help,
-                      label: Strings.helpAndSupport,
+                      label: "drawer.helpAndSupport".tr(),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.help);
@@ -225,7 +232,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     _SectionTitle('About'),
                     _NavTile(
                       icon: Icons.info,
-                      label: Strings.about,
+                      label: "drawer.about".tr(),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.about);
@@ -236,7 +243,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     _SectionTitle('Account'),
                     _NavTile(
                       icon: Icons.edit,
-                      label: 'Edit Profile',
+                      label: "drawer.editProfile".tr(),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.profileSetup);
@@ -244,7 +251,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     ),
                     _NavTile(
                       icon: Icons.logout,
-                      label: Strings.logOut,
+                      label: "drawer.logOut".tr(),
                       onTap: () async {
                         // TODO: logout
                         Navigator.pop(context);

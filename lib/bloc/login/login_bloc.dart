@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:assisted_living/data/models/login_response_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import '../../data/models/country_code_model.dart';
 import '../../data/repository/otp_verification_repo.dart';
 import '../../data/repository/var_customer_repo.dart';
 import '../../services/enum.dart';
-import '../../services/strings.dart';
 import '../../services/utility_functions.dart';
 import '../../services/validation_function.dart';
 
@@ -94,13 +94,12 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     // final data = {'loginid': enteredMobileNo};
     // emit(state.copyWith(enteredMobileNo: enteredMobileNo, otpSendStatus: ApiStatus.loading));
 
-    final enteredMobileNo =
-        state.enteredMobileNo ?? '';
+    final enteredMobileNo = state.enteredMobileNo ?? '';
     if (enteredMobileNo.isEmpty) {
       emit(
         state.copyWith(
           otpSendStatus: ApiStatus.failure,
-          loginErrorMsg: Strings.mobileNumberNotFilled,
+          loginErrorMsg: "errors.mobileNumberNotFilled".tr(),
         ),
       );
       return;
@@ -124,7 +123,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
                 // forgotMobileError: Strings.somethingWentWrongExceptionMsg,
                 // forgotMobileNumber: enteredMobileNo,
                 otpSendStatus: ApiStatus.failure,
-                loginErrorMsg: Strings.somethingWentWrongExceptionMsg,
+                loginErrorMsg: "exceptions.somethingWentWrongExceptionMsg".tr(),
               ),
             );
           } else {
@@ -162,7 +161,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
               // forgotMobileError: Strings.mobileNumberNotRegistered,
               // forgotMobileNumber: enteredMobileNo,
               otpSendStatus: ApiStatus.failure,
-              loginErrorMsg: Strings.mobileNumberNotRegistered,
+              loginErrorMsg: "errors.mobileNumberNotRegistered".tr(),
             ),
           );
         }
@@ -174,7 +173,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
           // forgotMobileError: Strings.somethingWentWrongExceptionMsg,
           // forgotMobileNumber: enteredMobileNo,
           otpSendStatus: ApiStatus.failure,
-          loginErrorMsg: Strings.somethingWentWrongExceptionMsg,
+          loginErrorMsg: "exceptions.somethingWentWrongExceptionMsg".tr(),
         ),
       );
     }

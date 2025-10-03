@@ -1,4 +1,4 @@
-import 'package:assisted_living/services/strings.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AppException implements Exception {
   final _message;
@@ -14,12 +14,12 @@ class AppException implements Exception {
 
 class FetchDataException extends AppException {
   FetchDataException([String? message])
-      : super(message, Strings.fetchExceptionMsg);
+    : super(message, "exceptions.fetchExceptionMsg".tr());
 }
 
 class SomethingWentWrongException extends AppException {
   SomethingWentWrongException([String? message])
-      : super(message, Strings.somethingWentWrongExceptionMsg);
+    : super(message, "exceptions.somethingWentWrongMsg".tr());
 }
 
 class InternalServerException extends AppException {
@@ -28,15 +28,15 @@ class InternalServerException extends AppException {
 
 class UnauthorizedException extends AppException {
   UnauthorizedException([String? message])
-      : super(message, Strings.unauthorizedRequestExceptionMsg);
+    : super(message, "exceptions.unauthorizedRequestMsg".tr());
 }
 
 class BadRequestException extends AppException {
   BadRequestException([String? message])
-      : super(message, Strings.badRequestExceptionMsg);
+    : super(message, "exceptions.badRequestMsg".tr());
 }
 
 class InvalidInputException extends AppException {
   InvalidInputException([String? message])
-      : super(message, Strings.invalidInputExceptionMsg);
+    : super(message, "exceptions.invalidInputMsg".tr());
 }
