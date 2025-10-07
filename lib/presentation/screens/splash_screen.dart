@@ -34,18 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 // SizedBox(height: 180.h),
                 SizedBox(height: r.px(180)),
                 // Image.asset("assets/images/logo.png", height: 42.h, width: 189.w),
-                Image.asset(
-                  "assets/images/logo.png",
-                  height: r.px(42),
-                  width: r.px(189),
-                ),
+                Image.asset("assets/images/logo.png", height: r.px(42), width: r.px(189),),
                 // SizedBox(height: 25.h),
                 SizedBox(height: r.px(25)),
                 CustomTextWidget(
                   "splash.moto".tr(),
-                  style: Theme.of(context).textTheme
-                      .rBodyMedium(context)!
-                      .copyWith(fontSize: r.font(32)),
+                  style:
+                  Theme.of(context).textTheme
+                      .rBodyMedium(context)!.copyWith(fontSize: r.font(32)),
                   // kohinoorRegular.copyWith(
                   //   fontSize: 32.sp,
                   //   color: AppColors.motoColor,
@@ -56,18 +52,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 // SizedBox(height: 34.h),
                 SizedBox(height: r.px(34)),
                 // Image.asset("assets/images/splash.png", height: 221.h, width: 299.w),
-                Image.asset(
-                  "assets/images/splash.png",
-                  height: r.px(221),
-                  width: r.px(299),
-                ),
+                Image.asset("assets/images/splash.png", height: r.px(221), width: r.px(299),),
                 // SizedBox(height: 34.h),
                 SizedBox(height: r.px(34)),
                 CustomTextWidget(
                   "splash.tagLine".tr(),
-                  style: Theme.of(context).textTheme
-                      .rBodyMedium(context)!
-                      .copyWith(fontSize: r.font(24)),
+                  style:
+                  Theme.of(context).textTheme
+                      .rBodyMedium(context)!.copyWith(fontSize: r.font(24)),
                   // kohinoorRegular.copyWith(
                   //   fontSize: 24.sp,
                   //   color: AppColors.lightTextColor,
@@ -81,18 +73,15 @@ class _SplashScreenState extends State<SplashScreen> {
             Padding(
               // padding: EdgeInsets.all(2.w),
               padding: EdgeInsets.all(r.space(2)),
-              child: CustomButton(
+              child:
+              CustomButton(
                 key: const Key('getStarted'),
                 buttonText: "splash.getStarted".tr(),
                 isValid: true,
                 onClick: () {
                   final isLoggedIn = context.read<AuthBloc>().state.isLoggedIn;
                   if (isLoggedIn) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      AppRoutes.profileSetup,
-                      (_) => false,
-                    );
+                    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.profileSetup, (_) => false);
                   } else {
                     Navigator.pushReplacementNamed(context, AppRoutes.login);
                   }

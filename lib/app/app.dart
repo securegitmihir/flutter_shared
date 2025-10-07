@@ -21,10 +21,11 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       child: MaterialApp(
         title: 'Assisted Living India Project - Services',
-        // theme: ThemeData(
-        //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        // ),
-        theme: theme,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        ),
+        // TODO: switch to dynamic theming
+        // theme: theme,
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.splash,
         onGenerateRoute: RouteGenerator.generateRoute,

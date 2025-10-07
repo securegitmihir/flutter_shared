@@ -53,7 +53,8 @@ class _ProfileSetupState extends State<ProfileSetup> {
         backgroundColor: AppColors.whiteColor,
         title: CustomTextWidget(
           "profileSetup.profileSetup".tr(),
-          style: Theme.of(context).textTheme.rTitleMedium(context)!,
+          style: Theme.of(context).textTheme
+              .rTitleMedium(context)!
           // kohinoorMedium.copyWith(
           //   // fontSize: 24.sp,
           //   fontSize: r.font(24),
@@ -72,8 +73,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
           if (_emailCtrl.text != state.email) {
             _emailCtrl.text = state.email;
           }
-          if (_birthYearCtrl.text != state.birthYear)
-            _birthYearCtrl.text = state.birthYear;
+          if (_birthYearCtrl.text != state.birthYear) _birthYearCtrl.text = state.birthYear;
           return Padding(
             // padding: EdgeInsets.all(16.0.w),
             padding: EdgeInsets.all(r.space(16)),
@@ -104,12 +104,9 @@ class _ProfileSetupState extends State<ProfileSetup> {
                             textInputAction: TextInputAction.next,
                             textInputType: TextInputType.name,
                             isRequired: true,
-                            inputFormatter: [
-                              LengthLimitingTextInputFormatter(50),
-                            ],
+                            inputFormatter: [LengthLimitingTextInputFormatter(50)],
                             textCapitalization: TextCapitalization.words,
-                            onChanged: (userName) =>
-                                bloc.add(FullNameChanged(userName!)),
+                            onChanged: (userName) => bloc.add(FullNameChanged(userName!)),
                             // initialValue: state.fullName,
                           ),
                           // SizedBox(height: 22.h),
@@ -133,14 +130,9 @@ class _ProfileSetupState extends State<ProfileSetup> {
                             onTap: () async {
                               FocusScope.of(context).unfocus();
                               final current = int.tryParse(state.birthYear);
-                              final yr = await _showYearPicker(
-                                context,
-                                initialYear: current,
-                              );
+                              final yr = await _showYearPicker(context, initialYear: current);
                               if (yr != null) {
-                                context.read<InitialProfileSetupBloc>().add(
-                                  BirthYearChanged(yr.toString()),
-                                );
+                                context.read<InitialProfileSetupBloc>().add(BirthYearChanged(yr.toString()));
                               }
                             },
                             child: AbsorbPointer(
@@ -157,12 +149,8 @@ class _ProfileSetupState extends State<ProfileSetup> {
                                 textInputAction: TextInputAction.none,
                                 textInputType: TextInputType.datetime,
                                 isRequired: true,
-                                errorText: state
-                                    .birthYearError, // keeps your existing error display
-                                onChanged:
-                                    (
-                                      _,
-                                    ) {}, // no-op (read-only via AbsorbPointer)
+                                errorText: state.birthYearError,      // keeps your existing error display
+                                onChanged: (_) {},                    // no-op (read-only via AbsorbPointer)
                               ),
                             ),
                           ),
@@ -182,17 +170,14 @@ class _ProfileSetupState extends State<ProfileSetup> {
                           CustomRadioGroup<String>(
                             key: const Key('genderGroup'),
                             padding: 0,
-                            labelText: 'Gender',
+                            labelText: "profileSetup.gender".tr(),
                             isRequired: true,
-                            options: const [
-                              RadioOption(value: 'Male', label: 'Male'),
-                              RadioOption(value: 'Female', label: 'Female'),
+                            options: [
+                              RadioOption(value: 'Male', label: "profileSetup.male".tr()),
+                              RadioOption(value: 'Female', label: "profileSetup.female".tr()),
                             ],
-                            groupValue: state.gender.isEmpty
-                                ? null
-                                : state.gender,
-                            onChanged: (gender) =>
-                                bloc.add(GenderChanged(gender!)),
+                            groupValue: state.gender.isEmpty ? null : state.gender,
+                            onChanged: (gender) => bloc.add(GenderChanged(gender!)),
                             errorText: state.genderError,
                             direction: Axis.horizontal,
                             enabled: true,
@@ -214,11 +199,8 @@ class _ProfileSetupState extends State<ProfileSetup> {
                             textInputAction: TextInputAction.next,
                             textInputType: TextInputType.emailAddress,
                             isRequired: false,
-                            inputFormatter: [
-                              LengthLimitingTextInputFormatter(50),
-                            ],
-                            onChanged: (email) =>
-                                bloc.add(EmailChanged(email!)),
+                            inputFormatter: [LengthLimitingTextInputFormatter(50)],
+                            onChanged: (email) => bloc.add(EmailChanged(email!)),
                             // initialValue: state.email,
                           ),
                           const Spacer(),
@@ -234,14 +216,10 @@ class _ProfileSetupState extends State<ProfileSetup> {
                               bloc.add(ValidateStep());
                               final ok = bloc.state.isStepValid;
                               if (ok) {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.dashboard,
-                                  arguments: {
-                                    'username': _fullNameCtrl.text.trim(),
-                                    'gender': state.gender,
-                                  },
-                                );
+                                Navigator.pushNamed(context, AppRoutes.dashboard, arguments: {
+                                  'username': _fullNameCtrl.text.trim(),
+                                  'gender': state.gender
+                                },);
                               }
                             },
                             isLoading: false,
@@ -360,7 +338,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
   Future<int?> _showYearPicker(BuildContext context, {int? initialYear}) async {
     final now = DateTime.now();
     final first = DateTime(1950);
-    final last = DateTime(now.year);
+    final last  = DateTime(now.year);
     final selected = DateTime(initialYear ?? now.year);
 
     int? picked;
@@ -386,16 +364,13 @@ class _ProfileSetupState extends State<ProfileSetup> {
     return picked;
   }
 
-  Future<int?> _pickYearWithCalendar(
-    BuildContext context, {
-    int? initialYear,
-  }) async {
+  Future<int?> _pickYearWithCalendar(BuildContext context, {int? initialYear}) async {
     final now = DateTime.now();
     final first = DateTime(1950, 1, 1);
-    final last = DateTime(now.year, 12, 31);
+    final last  = DateTime(now.year, 12, 31);
     DateTime init = DateTime(initialYear ?? now.year, 1, 1);
     if (init.isBefore(first)) init = first;
-    if (init.isAfter(last)) init = last;
+    if (init.isAfter(last))  init = last;
 
     final date = await showDatePicker(
       context: context,
@@ -410,30 +385,24 @@ class _ProfileSetupState extends State<ProfileSetup> {
         return Theme(
           data: theme.copyWith(
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.appBarColor,
-              ),
+              style: TextButton.styleFrom(foregroundColor: AppColors.appBarColor),
             ),
             colorScheme: theme.colorScheme.copyWith(
-              primary: AppColors.appBarColor, // header / selection accents
+              primary: AppColors.appBarColor,   // header / selection accents
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: Colors.black87,
             ),
             datePickerTheme: DatePickerThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               headerBackgroundColor: AppColors.appBarColor,
               headerForegroundColor: Colors.white,
               yearBackgroundColor: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected))
-                  return AppColors.appBarDarkColor;
+                if (states.contains(MaterialState.selected)) return AppColors.appBarDarkColor;
                 return null;
               }),
               yearForegroundColor: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected))
-                  return Colors.white;
+                if (states.contains(MaterialState.selected)) return Colors.white;
                 return null;
               }),
             ),
@@ -445,4 +414,5 @@ class _ProfileSetupState extends State<ProfileSetup> {
 
     return date?.year;
   }
+
 }

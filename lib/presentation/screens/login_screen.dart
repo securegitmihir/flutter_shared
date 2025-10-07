@@ -17,6 +17,7 @@ import '../../services/enum.dart';
 import '../../services/snackbar_service.dart';
 import '../../services/utility_functions.dart';
 import '../widgets/app_update_prompter.dart';
+import '../widgets/language_pop_up.dart';
 import '../widgets/otp_box.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
-
+    
     final kbOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocListener<OtpVerificationBloc, OtpVerificationState>(
@@ -81,6 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
           _authBloc.add(IsLoggedIn(true));
           // reset OTP bloc for next time
           context.read<OtpVerificationBloc>().add(ResetEvent());
+
+          // if (context.mounted) {
+          //   await showDialog<void>(
+          //     context: context,
+          //     barrierDismissible: false,
+          //     builder: (_) => const LanguagePopup(),
+          //   );
+          // }
+
           if (!context.mounted) return;
           Navigator.pushReplacementNamed(context, AppRoutes.profileSetup);
         }
@@ -164,25 +174,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // SizedBox(height: (onOtpStep && kbOpen) ? 110.h : 157.h),
-                                    SizedBox(
-                                      height: (onOtpStep && kbOpen)
-                                          ? r.px(110)
-                                          : r.px(157),
-                                    ),
+                                    SizedBox(height: (onOtpStep && kbOpen) ? r.px(110) : r.px(157)),
                                     // SizedBox(height: 157),
                                     // Image.asset("assets/images/logo.png", height: 28.h),
-                                    Image.asset(
-                                      "assets/images/logo.png",
-                                      height: r.px(28),
-                                      width: r.px(125),
-                                    ),
+                                    Image.asset("assets/images/logo.png", height: r.px(28), width: r.px(125),),
                                     // SizedBox(height: 26.h),
                                     SizedBox(height: r.px(26)),
                                     CustomTextWidget(
                                       "login.welcome".tr(),
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.rHeadlineMedium(context)!,
+                                      style: Theme.of(context).textTheme
+                                          .rHeadlineMedium(context)!,
                                       // kohinoorSemiBold.copyWith(
                                       //   fontSize: 24.sp,
                                       //   fontWeight: FontWeight.w600,
@@ -194,8 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     CustomTextWidget(
                                       "login.enterNumber".tr(),
                                       style: Theme.of(context).textTheme
-                                          .rLabelMedium(context)!
-                                          .copyWith(fontSize: r.font(14)),
+                                          .rLabelMedium(context)!.copyWith(fontSize: r.font(14)),
                                       // kohinoorRegular.copyWith(
                                       //   fontSize: 14.sp,
                                       //   fontWeight: FontWeight.w400,
@@ -208,22 +208,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                       key: const Key('mobileField'),
                                       controller: _phoneController,
                                       allowedLength: state.allowedLength,
-                                      mobileCodes:
-                                          UtilityFunctions.getCountryCodeList(
-                                            _mobileCodeList,
-                                          ),
+                                      mobileCodes: UtilityFunctions.getCountryCodeList(
+                                        _mobileCodeList,
+                                      ),
                                       textInputAction: TextInputAction.next,
                                       selectedCode: state.selectedCountryCode,
                                       onCountryCodeSelected: (selectedCountry) {
                                         _loginBloc.add(
                                           CountryCodeSelected(
                                             selectedCountryCodeId:
-                                                UtilityFunctions.getCountryCodeKeyFromValue(
-                                                  _mobileCodeList!,
-                                                  selectedCountry,
-                                                )!,
-                                            selectedCountryCode:
-                                                selectedCountry,
+                                            UtilityFunctions.getCountryCodeKeyFromValue(
+                                              _mobileCodeList!,
+                                              selectedCountry,
+                                            )!,
+                                            selectedCountryCode: selectedCountry,
                                             mobileCodes: _mobileCodeList!,
                                           ),
                                         );
@@ -240,27 +238,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ? state.mobileErrorMsg
                                           : null,
                                       // enabled: !_countryCodeFetchFailure,
-                                      enabled:
-                                          !onOtpStep &&
-                                          !_countryCodeFetchFailure,
+                                      enabled: !onOtpStep && !_countryCodeFetchFailure,
                                       countryCodeStatus: mobileCodeStatus,
                                     ),
                                     // SizedBox(height: onOtpStep ? 0.h : 14.h),
-                                    SizedBox(
-                                      height: onOtpStep ? r.px(0) : r.px(14),
-                                    ),
+                                    SizedBox(height: onOtpStep ? r.px(0) : r.px(14)),
                                     if (onOtpStep)
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: TextButton(
-                                          onPressed: () => context
-                                              .read<LoginBloc>()
-                                              .add(BackToEditPhone()),
+                                          onPressed: () => context.read<LoginBloc>().add(
+                                            BackToEditPhone(),
+                                          ),
                                           child: CustomTextWidget(
                                             "login.changeNumber".tr(),
                                             style: Theme.of(context).textTheme
-                                                .rBodyMedium(context)!
-                                                .copyWith(fontSize: r.font(14)),
+                                                .rBodyMedium(context)!.copyWith(fontSize: r.font(14)),
                                             // kohinoorRegular.copyWith(
                                             //   fontSize: 14.sp,
                                             //   fontWeight: FontWeight.w400,
@@ -274,9 +267,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         children: [
                                           CustomTextWidget(
                                             "login.note".tr(),
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.rBodyMedium(context)!,
+                                            style: Theme.of(context).textTheme
+                                                .rBodyMedium(context)!,
                                             // kohinoorRegular.copyWith(
                                             //   fontSize: 16.sp,
                                             //   fontWeight: FontWeight.w400,
@@ -285,20 +277,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                AppRoutes.terms,
-                                              );
+                                              Navigator.pushNamed(context, AppRoutes.terms);
                                             },
                                             child: CustomTextWidget(
                                               "login.terms".tr(),
                                               style: Theme.of(context).textTheme
-                                                  .rBodyMedium(context)!
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  ),
+                                                  .rBodyMedium(context)!.copyWith(fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
                                               // kohinoorSemiBold.copyWith(
                                               //   fontSize: 16.sp,
                                               //   fontWeight: FontWeight.w600,
@@ -309,9 +293,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                           CustomTextWidget(
                                             "login.and".tr(),
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.rBodyMedium(context)!,
+                                            style: Theme.of(context).textTheme
+                                                .rBodyMedium(context)!,
                                             // kohinoorMedium.copyWith(
                                             //   fontSize: 16.sp,
                                             //   color: AppColors.textColor,
@@ -319,20 +302,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                AppRoutes.privacy,
-                                              );
+                                              Navigator.pushNamed(context, AppRoutes.privacy);
                                             },
                                             child: CustomTextWidget(
                                               "login.privacy".tr(),
                                               style: Theme.of(context).textTheme
-                                                  .rBodyMedium(context)!
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  ),
+                                                  .rBodyMedium(context)!.copyWith(fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
                                               // style: kohinoorSemiBold.copyWith(
                                               //   fontSize: 16.sp,
                                               //   fontWeight: FontWeight.w600,
@@ -346,9 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     // SizedBox(height: 12.h),
                                     SizedBox(height: r.px(12)),
                                     AnimatedCrossFade(
-                                      duration: const Duration(
-                                        milliseconds: 200,
-                                      ),
+                                      duration: const Duration(milliseconds: 200),
                                       crossFadeState: onOtpStep
                                           ? CrossFadeState.showSecond
                                           : CrossFadeState.showFirst,
@@ -361,11 +334,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             child: Row(
                                               key: const Key('otpRow'),
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: List.generate(6, (
-                                                index,
-                                              ) {
+                                              MainAxisAlignment.spaceBetween,
+                                              children: List.generate(6, (index) {
                                                 return OtpBox(
                                                   controller: _otpCtrls[index],
                                                   focusNode: _otpNodes[index],
@@ -375,8 +345,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   prevFocus: index > 0
                                                       ? _otpNodes[index - 1]
                                                       : null,
-                                                  onChanged: (_) =>
-                                                      _notifyOtpChanged(),
+                                                  onChanged: (_) => _notifyOtpChanged(),
                                                 );
                                               }),
                                             ),
@@ -389,16 +358,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     if (!(onOtpStep && kbOpen))
                                       const Spacer()
                                     else
-                                      // SizedBox(height: 25.h),
+                                    // SizedBox(height: 25.h),
                                       SizedBox(height: r.px(25)),
                                     BlocBuilder<
-                                      OtpVerificationBloc,
-                                      OtpVerificationState
+                                        OtpVerificationBloc,
+                                        OtpVerificationState
                                     >(
                                       builder: (context, otpState) {
                                         final onOtpStep =
-                                            state.step ==
-                                            LoginFlowStep.verifyOtp;
+                                            state.step == LoginFlowStep.verifyOtp;
                                         final isBtnEnabled = onOtpStep
                                             ? otpState.isOtpValid
                                             : state.isMobileNoValid;
@@ -413,16 +381,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                             FocusScope.of(context).unfocus();
                                             if (onOtpStep) {
                                               // optional: verify here using entered OTP vs actual
-                                              context
-                                                  .read<OtpVerificationBloc>()
-                                                  .add(
-                                                    VerifyButtonClicked(
-                                                      enteredOtp:
-                                                          otpState.enteredOtp,
-                                                      actualOtp:
-                                                          state.receivedOTP,
-                                                    ),
-                                                  );
+                                              context.read<OtpVerificationBloc>().add(
+                                                VerifyButtonClicked(
+                                                  enteredOtp: otpState.enteredOtp,
+                                                  actualOtp: state.receivedOTP,
+                                                ),
+                                              );
                                             } else {
                                               _loginBloc.add(SendOTP());
                                             }
@@ -440,7 +404,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       );
-                    },
+                    }
                     // child: SingleChildScrollView(
                     //   child: ConstrainedBox(
                     //     constraints: BoxConstraints(minHeight: c.maxHeight),

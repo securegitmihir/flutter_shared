@@ -1,8 +1,7 @@
 class AppUrl {
   static var baseUrl = "https://services.secure-al.com:47277";
   static var getOTP = '$baseUrl/api/ALServices/GetOTPData';
-  static var validateCustomerMobile =
-      '$baseUrl/api/MobileAppController/ValidateCustomerMobile';
+  static var validateCustomerMobile = '$baseUrl/api/MobileAppController/ValidateCustomerMobile';
   static var countryCodeApi = '$baseUrl/api/Master/GetCountryCode';
   static var appVersionApi = '$baseUrl/api/ALServices/GetApiVersion';
   static Function getLanguageJson = (language, namespaces) =>

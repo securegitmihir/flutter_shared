@@ -39,13 +39,17 @@ final Map<String, dynamic> fallbackEn = {
     "emailLabel": "Enter your email",
     "fullNameLabel": "Enter full name",
     "save": "Save",
+    "male": "Male",
+    "female": "Female",
   },
   "addMember": {
     "addMember": "Add Member",
     "fullName": "Name",
     "hintRelationText": 'Select',
     "hintLabelText": 'Relation',
+    "hintFullNameText": 'Enter full name',
     "save": "Save",
+    "addPic": "Add profile picture",
   },
   "updatePopup": {
     "mandatoryUpdateText":
@@ -108,13 +112,17 @@ final Map<String, dynamic> fallbackHi = {
     "emailHint": "अपना ईमेल दर्ज करें",
     "emailLabel": "अपना ईमेल दर्ज करें",
     "fullNameLabel": "पूरा नाम दर्ज करें",
+    "male": "मेल",
+    "female": "फीमेल",
   },
   "addMember": {
     "addMember": "सदस्य जोड़ें",
     "fullName": "नाम",
     "hintRelationText": 'चुनें',
     "hintLabelText": 'संबंध',
+    "hintFullNameText": 'पूरा नाम जोड़ें',
     "save": "सहेजें",
+    "addPic": "जोड़ें",
   },
   "updatePopup": {
     "mandatoryUpdateText":

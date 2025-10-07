@@ -10,5 +10,6 @@ class AppRoutes {
   static const String addMember = '/addMember';
   static const String contactUs = '/contactUs';
   static const String feedback = '/feedback';
+  static const String diary = '/diary';
   static const String language = '/language';
 }

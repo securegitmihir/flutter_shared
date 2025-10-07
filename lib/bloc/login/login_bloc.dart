@@ -94,7 +94,8 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     // final data = {'loginid': enteredMobileNo};
     // emit(state.copyWith(enteredMobileNo: enteredMobileNo, otpSendStatus: ApiStatus.loading));
 
-    final enteredMobileNo = state.enteredMobileNo ?? '';
+    final enteredMobileNo =
+        state.enteredMobileNo ?? '';
     if (enteredMobileNo.isEmpty) {
       emit(
         state.copyWith(

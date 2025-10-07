@@ -60,11 +60,13 @@ dependencies:
   url_launcher: ^6.3.0
 #    to access camera
   image_picker: ^1.2.0
-#  to crop images
-  image_cropper: ^11.0.0
-#  to get Installed app details
+  pro_image_editor: ^11.7.0
+  #  to get app details
   package_info_plus: ^9.0.0
+#  for language
   easy_localization: ^3.0.8
+#  for code coverage
+  remove_from_coverage: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -86,12 +86,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                             AvatarPicker(
                               radius: r.px(40),
                               file: _avatarFile,
+                              badgeColor: AppColors.appBarColor,
                               onTap: () async {
-                                final f =
-                                    await ImagePickerHelper.pickImageWithSheet(
-                                      context,
-                                      allowEdit: true,
-                                    );
+                                final f = await ImagePickerHelper.pickImageWithSheet(context);
                                 if (!mounted) return;
                                 if (f != null) setState(() => _avatarFile = f);
                               },
@@ -185,20 +182,15 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                     _NavTile(
                       icon: Icons.note_alt_sharp,
                       label: "drawer.diary".tr(),
-                      onTap: () => Navigator.pop(context),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, AppRoutes.diary);
+                      }
                     ),
                     _NavTile(
                       icon: Icons.settings,
                       label: "drawer.settings".tr(),
                       onTap: () => Navigator.pop(context),
-                    ),
-                    _NavTile(
-                      icon: Icons.language,
-                      label: "drawer.language".tr(),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, AppRoutes.language);
-                      },
                     ),
                     const Divider(height: 16),
 
@@ -247,6 +239,14 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.profileSetup);
+                      },
+                    ),
+                    _NavTile(
+                      icon: Icons.language,
+                      label: "drawer.language".tr(),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, AppRoutes.language);
                       },
                     ),
                     _NavTile(
@@ -677,9 +677,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
 
             // >>> FIX: pick a fixed (or capped) width for the name box
             // Option A: fixed width (responsive)
-            final nameBoxTarget = r.px(160); // <- adjust to taste
-            // Option B (alternative): a fraction of available space
-            // final nameBoxTarget = available * 0.5; // 50% of available
+            final nameBoxTarget = r.px(160);
 
             // Final width used for the name area (never exceed available)
             final nameBoxWidth = math.min(available, nameBoxTarget);

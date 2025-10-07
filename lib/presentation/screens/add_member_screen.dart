@@ -88,8 +88,9 @@ import 'package:assisted_living/responsive/responsive.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../../bloc/add_member/add_member_bloc.dart';
 import '../../services/app_colors.dart';
 import '../widgets/avatar_picker.dart';
 import '../widgets/custom_appbar.dart';
@@ -107,9 +108,8 @@ class AddMemberScreen extends StatefulWidget {
 }
 
 class _AddMemberScreenState extends State<AddMemberScreen> {
-  final _nameCtrl = TextEditingController();
-  final _otherRelationCtrl = TextEditingController();
-  String? _relation;
+  late var _nameCtrl = TextEditingController();
+  late var _otherRelationCtrl = TextEditingController();
   bool _saving = false;
   final _picker = ImagePicker();
   File? _avatarFile;
@@ -125,13 +125,19 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    final initState = context.read<AddMemberBloc>().state;
+    _nameCtrl = TextEditingController(text: initState.fullName);
+    _otherRelationCtrl = TextEditingController(text: initState.otherRelation);
+  }
+
+  @override
   void dispose() {
     _nameCtrl.dispose();
     _otherRelationCtrl.dispose();
     super.dispose();
   }
-
-  bool get _isValid => _nameCtrl.text.trim().isNotEmpty && _relation != null;
 
   @override
   Widget build(BuildContext context) {
@@ -141,9 +147,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
       appBar: CustomAppBar(
         title: CustomTextWidget(
           "addMember.addMember".tr(),
-          style: Theme.of(context).textTheme
-              .rTitleMedium(context)!
-              .copyWith(color: AppColors.btnTextColor),
+          style: Theme.of(
+            context,
+          ).textTheme.rTitleMedium(context)!.copyWith(color: AppColors.btnTextColor),
         ),
         foregroundColor: AppColors.btnTextColor,
         gradient: const LinearGradient(
@@ -154,7 +160,16 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
         centerTitle: false,
       ),
 
-      body: SafeArea(
+      body: BlocBuilder<AddMemberBloc, AddMemberState>(
+  builder: (context, state) {
+    final bloc = context.read<AddMemberBloc>();
+    if (_nameCtrl.text != state.fullName) {
+      _nameCtrl.text = state.fullName;
+    }
+    if (_otherRelationCtrl.text != state.otherRelation) {
+      _otherRelationCtrl.text = state.otherRelation!;
+    }
+    return SafeArea(
         child: LayoutBuilder(
           builder: (context, c) {
             // child:
@@ -177,21 +192,13 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                               file: _avatarFile,
                               badgeColor: AppColors.appBarColor,
                               onTap: () async {
-                                final f =
-                                    await ImagePickerHelper.pickImageWithSheet(
-                                      context,
-                                    );
+                                final f = await ImagePickerHelper.pickImageWithSheet(context);
                                 if (!mounted) return;
                                 if (f != null) setState(() => _avatarFile = f);
                               },
                             ),
-                            SizedBox(height: r.px(20)),
-                            CustomTextWidget(
-                              'Add profile picture',
-                              style: Theme.of(
-                                context,
-                              ).textTheme.rDisplayMedium(context)!,
-                            ),
+                            SizedBox(height: r.px(20),),
+                            CustomTextWidget("addMember.addPic".tr(), style: Theme.of(context).textTheme.rDisplayMedium(context)!,)
                           ],
                         ),
                         // child: Stack(
@@ -247,6 +254,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                       // Full name
                       CustomTextField(
                         key: const Key('NameField'),
+                        controller: _nameCtrl,
                         padding: 0,
                         enabled: true,
                         labelText: "addMember.fullName".tr(),
@@ -260,7 +268,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                         // shows the asterisk like your mock
                         inputFormatter: [LengthLimitingTextInputFormatter(50)],
                         textCapitalization: TextCapitalization.words,
-                        onChanged: (_) => setState(() {}),
+                        onChanged: (userName) => bloc.add(FullNameChanged(userName!)),
+                        errorText: state.fullNameError,
                       ),
 
                       SizedBox(height: r.px(18)),
@@ -306,7 +315,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                       // ),
                       CustomDropdownWidget(
                         key: const Key('relationDropdown'),
-                        // initialItem: state.birthYear,
+                        initialItem: state.relation,
                         // isRequired: true,
                         showError: false,
                         error: null,
@@ -314,24 +323,15 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                         enabled: true,
                         hintText: "addMember.hintRelationText".tr(),
                         labelText: "addMember.hintLabelText".tr(),
-                        onChange: (val) {
-                          setState(() {
-                            _relation = val;
-                            if (_relation != 'Others') {
-                              _otherRelationCtrl
-                                  .clear(); // clear when switching away
-                            }
-                          });
-                          // FocusScope.of(context).unfocus();
-                          // bloc.add(BirthYearChanged(selectedYear ?? ''));
-                        },
+                        onChange: (relation) => bloc.add(RelationChanged(relation))
                       ),
 
                       // Show extra field when "Others" is chosen
-                      if (_relation == 'Others') ...[
+                      if (state.relation == 'Others') ...[
                         SizedBox(height: r.px(18)),
                         CustomTextField(
                           key: const Key('otherRelationField'),
+                          controller: _otherRelationCtrl,
                           padding: 0,
                           enabled: true,
                           labelText: 'Specify relation',
@@ -341,11 +341,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                           numericKeyboard: false,
                           textInputAction: TextInputAction.done,
                           textInputType: TextInputType.text,
-                          isRequired: true,
-                          inputFormatter: [
-                            LengthLimitingTextInputFormatter(30),
-                          ],
-                          onChanged: (_) => setState(() {}),
+                          // isRequired: true,
+                          inputFormatter: [LengthLimitingTextInputFormatter(30)],
+                          onChanged: (other) => bloc.add(OtherRelationChanged(other!)),
                         ),
                       ],
 
@@ -355,15 +353,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                       CustomButton(
                         key: const Key('saveContinueBtn'),
                         buttonText: "addMember.save".tr(),
-                        isValid: false,
+                        isValid: state.isStepValid,
                         onClick: () {
                           FocusScope.of(context).unfocus();
-                          Navigator.pop(context);
-                          // bloc.add(ValidateStep());
-                          // final ok = bloc.state.isStepValid;
-                          // if (ok) {
-                          //   Navigator.pushNamed(context, AppRoutes.dashboard);
-                          // }
+                          bloc.add(ValidateStep());
+                          final ok = bloc.state.isStepValid;
+                          if (ok) {
+                            Navigator.pop(context);
+                          }
                         },
                         isLoading: false,
                       ),
@@ -375,7 +372,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
             );
           },
         ),
-      ),
+      );
+  },
+),
     );
   }
 
@@ -389,7 +388,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
     // Close and return data if you want:
     Navigator.pop(context, {
       'name': _nameCtrl.text.trim(),
-      'relation': _relation,
+      // 'relation': _relation,
       'avatarPath': _avatarFile?.path,
     });
   }
