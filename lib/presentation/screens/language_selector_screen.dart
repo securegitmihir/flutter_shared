@@ -1,4 +1,5 @@
 import 'package:assisted_living/app/routes/app_routes.dart';
+import 'package:assisted_living/services/constants.dart';
 import 'package:assisted_living/services/language/language_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,22 +10,8 @@ class LanguageSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final options = const [
-      _Lang(
-        code: 'en',
-        locale: Locale('en'),
-        emoji: '🇺🇸',
-        name: 'English',
-        native: 'English',
-      ),
-      _Lang(
-        code: 'hi',
-        locale: Locale('hi'),
-        emoji: '🇮🇳',
-        name: 'Hindi',
-        native: 'हिन्दी',
-      ),
-    ];
+    final options = Constants.supportedLanguages;
+
     final langState = context.read<LanguageState>();
     final current = context.locale.languageCode;
     return Scaffold(
@@ -41,9 +28,7 @@ class LanguageSelectorScreen extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(14),
                 onTap: () async {
-                  Navigator.popUntil(context, (route) {
-                    return route.settings.name == AppRoutes.dashboard;
-                  });
+                  Navigator.pop(context);
                   langState.setLanguage(o.code);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Language changed to ${o.name}')),
@@ -79,19 +64,4 @@ class LanguageSelectorScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class _Lang {
-  final String code;
-  final Locale locale;
-  final String emoji;
-  final String name;
-  final String native;
-  const _Lang({
-    required this.code,
-    required this.locale,
-    required this.emoji,
-    required this.name,
-    required this.native,
-  });
 }

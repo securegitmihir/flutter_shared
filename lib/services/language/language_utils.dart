@@ -1,12 +1,16 @@
 import 'dart:ui' show Locale, PlatformDispatcher;
 
+import 'package:assisted_living/services/constants.dart';
+
 /// finds the best matching language from the supported language list
 /// based on the device preferred language.
 class LanguageUtils {
-  static Locale bestSupportedLanguage(
-    List<Locale> supported,
-    Locale defaultLocale,
-  ) {
+  static Locale bestSupportedLanguage() {
+    final supported = Constants.supportedLanguages
+        .map((c) => Locale(c.code))
+        .toList();
+    final defaultLocale = Locale(Constants.defaultLanguage);
+
     final prefs = PlatformDispatcher.instance.locales.isNotEmpty
         ? PlatformDispatcher.instance.locales
         : [PlatformDispatcher.instance.locale ?? defaultLocale];

@@ -21,23 +21,14 @@ class LocalizationWrapper extends StatelessWidget {
     final savedLang = prefs.getString(Constants.language_key);
 
     // first time user gets system preference
-    final supportedLocales = Constants.supportedLanguages
-        .map((c) => Locale(c))
-        .toList();
-    final defaultLocale = Locale(Constants.defaultLanguage);
-    Locale systemBest() {
-      return LanguageUtils.bestSupportedLanguage(
-        supportedLocales,
-        defaultLocale,
-      );
-    }
+    final systemBest = LanguageUtils.bestSupportedLanguage();
 
     return EasyLocalization(
       supportedLocales: Constants.supportedLanguages
-          .map((e) => Locale(e))
+          .map((e) => Locale(e.code))
           .toList(),
-      fallbackLocale: systemBest(),
-      startLocale: savedLang != null ? Locale(savedLang) : systemBest(),
+      fallbackLocale: systemBest,
+      startLocale: savedLang != null ? Locale(savedLang) : systemBest,
       assetLoader: NetworkAssetLoader(
         LanguageRepository(LanguageDataProvider()),
       ),

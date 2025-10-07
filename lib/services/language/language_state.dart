@@ -42,17 +42,7 @@ class LanguageState with ChangeNotifier {
         return;
       }
 
-      final supportedLocales = Constants.supportedLanguages
-          .map((c) => Locale(c))
-          .toList();
-      final defaultLocale = Locale(Constants.defaultLanguage);
-      final systemBest = LanguageUtils.bestSupportedLanguage(
-        supportedLocales,
-        defaultLocale,
-      );
-
-      _currentLanguage = systemBest;
-      print('Changing app language to $_currentLanguage');
+      _currentLanguage = LanguageUtils.bestSupportedLanguage();
       setLanguage(_currentLanguage.languageCode, localStore: localStorage);
     };
     getLanguageFromLocalStorage(localStorage);
