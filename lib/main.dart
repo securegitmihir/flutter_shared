@@ -1,9 +1,7 @@
 import 'package:assisted_living/bloc/auth/auth_bloc.dart';
 import 'package:assisted_living/bloc/initial_profile_setup/initial_profile_setup_bloc.dart';
 import 'package:assisted_living/bloc/otp_verification/otp_verification_bloc.dart';
-import 'package:assisted_living/data/data_provider/language_dp.dart';
-import 'package:assisted_living/data/repository/language_repo.dart';
-import 'package:assisted_living/services/language/i18n_loader.dart';
+import 'package:assisted_living/services/language/localization_wrapper.dart';
 import 'package:assisted_living/services/log_service.dart';
 import 'package:assisted_living/services/shared_pref_service.dart';
 import 'package:assisted_living/theme/app_theme.dart';
@@ -23,7 +21,6 @@ import 'data/data_provider/var_customer_dp.dart';
 import 'data/repository/common_repo.dart';
 import 'data/repository/otp_verification_repo.dart';
 import 'data/repository/var_customer_repo.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 late HydratedStorage hydratedStorage;
 
@@ -38,8 +35,7 @@ void main() async {
   );
   HydratedBloc.storage = hydratedStorage;
 
-  final prefs = await SharedPreferences.getInstance();
-  final savedLang = prefs.getString('i18n_lang');
+  final localStorage = await SharedPreferences.getInstance();
 
   runApp(
     MultiRepositoryProvider(
@@ -73,23 +69,16 @@ void main() async {
           BlocProvider(create: (_) => AuthBloc()),
           BlocProvider(create: (_) => InitialProfileSetupBloc()),
         ],
-        child: ChangeNotifierProvider(
-          create: (_) => ThemeState(),
-          child: ChangeNotifierProvider(
-            create: (_) => LanguageState(),
-            child: EasyLocalization(
-              supportedLocales: const [Locale('en'), Locale('hi')],
-              fallbackLocale: const Locale('en'),
-              startLocale: savedLang != null
-                  ? Locale(savedLang)
-                  : const Locale('en'),
-              assetLoader: NetworkAssetLoader(
-                LanguageRepository(LanguageDataProvider()),
-              ),
-              path: 'unused',
-              child: const MyApp(),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => ThemeState()),
+            Provider(create: (_) => localStorage),
+            ChangeNotifierProvider(
+              create: (buildContext) =>
+                  LanguageState.initiateState(localStorage),
             ),
-          ),
+          ],
+          child: LocalizationWrapper(child: MyApp()),
         ),
       ),
     ),

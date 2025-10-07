@@ -25,65 +25,57 @@ class LanguageSelectorScreen extends StatelessWidget {
         native: 'हिन्दी',
       ),
     ];
-
+    final langState = context.read<LanguageState>();
+    final current = context.locale.languageCode;
     return Scaffold(
       appBar: AppBar(title: Text('Select Language')),
-      body: Consumer<LanguageState>(
-        builder: (context, langState, _) {
-          final current = context.locale.languageCode;
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              ...options.map((o) {
-                final selected = o.code == current;
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          ...options.map((o) {
+            final selected = o.code == current;
+            return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: () async {
+                  Navigator.popUntil(context, (route) {
+                    return route.settings.name == AppRoutes.dashboard;
+                  });
+                  langState.setLanguage(o.code);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Language changed to ${o.name}')),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
                   ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(14),
-                    onTap: () async {
-                      Navigator.popUntil(context, (route) {
-                        print(route.settings.name);
-                        return route.settings.name == AppRoutes.dashboard;
-                      });
-                      langState.setLanguage(o.code);
-                      await context.setLocale(o.locale);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Language changed to ${o.name}'),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      child: ListTile(
-                        leading: Text(
-                          o.emoji,
-                          style: const TextStyle(fontSize: 26),
-                        ),
-                        title: Text(
-                          o.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Text(o.native),
-                        trailing: Icon(
-                          selected ? Icons.check_circle : Icons.circle_outlined,
-                          color: selected
-                              ? Theme.of(context).colorScheme.primary
-                              : null,
-                        ),
-                      ),
+                  child: ListTile(
+                    leading: Text(
+                      o.emoji,
+                      style: const TextStyle(fontSize: 26),
+                    ),
+                    title: Text(
+                      o.name,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(o.native),
+                    trailing: Icon(
+                      selected ? Icons.check_circle : Icons.circle_outlined,
+                      color: selected
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
                     ),
                   ),
-                );
-              }),
-            ],
-          );
-        },
+                ),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }

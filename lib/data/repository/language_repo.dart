@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:assisted_living/services/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data_provider/language_dp.dart';
@@ -12,20 +13,19 @@ class LanguageRepository {
   static const _namespaces = ['common', 'home', 'drawer'];
 
   // Pref keys
-  static const _kLang = 'i18n_lang';
+
   static String _kVer(String lang) => 'i18n_ver_$lang';
   static String _kJson(String lang) => 'i18n_json_$lang';
 
+  /// Fetches language JSON from server or local cache
+  /// Caches the JSON and version in local storage
+  /// If fetching fails, uses fallback strings
   Future<Map<String, dynamic>> getLanguageJson(String lang) async {
-    if (lang != 'en') {
-      return fallbackHi;
-    }
-    return fallbackEn;
     final prefs = await SharedPreferences.getInstance();
-    final _lang = prefs.getString(_kLang) ?? lang;
+    final _lang = prefs.getString(Constants.language_key) ?? lang;
     final savedVer = prefs.getString(_kVer(_lang));
     final ns = _namespaces.join(',');
-
+    // fetch version first, if different or not found, fetch new json
     try {
       final vRes = await languageDataProvider.getLanguageVersion(ns, _lang);
 
@@ -48,6 +48,9 @@ class LanguageRepository {
     final cached = prefs.getString(_kJson(_lang));
     if (cached != null) {
       return jsonDecode(cached) as Map<String, dynamic>;
+    }
+    if (_lang == 'hi') {
+      return fallbackHi;
     }
     return fallbackEn;
   }

@@ -16,9 +16,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeType = context.watch<ThemeState>().themeType;
     final theme = AppTheme.getTheme(themeType, context.responsive);
-
-    print("Width: ${MediaQuery.of(context).size.width}");
-    print("Height: ${MediaQuery.of(context).size.height}");
     return ScreenUtilInit(
       designSize: const Size(412, 870),
       minTextAdapt: true,
@@ -32,6 +29,7 @@ class MyApp extends StatelessWidget {
         initialRoute: AppRoutes.splash,
         onGenerateRoute: RouteGenerator.generateRoute,
         navigatorObservers: [appRouteObserver],
+        // app language configuration
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
