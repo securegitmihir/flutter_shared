@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'package:assisted_living/theme/app_theme.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter/services.dart';
+import 'package:assisted_living/services/constants.dart';
 import 'breakpoints.dart';
 import 'package:flutter/material.dart';
 part 'package:assisted_living/responsive/font/font_responsive.dart';
@@ -15,6 +14,7 @@ class Responsive {
   double get width => _bp.size.width;
   double get height => _bp.size.height;
   double get scale => _bp.textScale;
+  DeviceType get deviceType => _bp.deviceType;
 
   bool get isPortrait => _bp.orientation == ScreenOrient.portrait;
   bool get isLandscape => _bp.orientation == ScreenOrient.landscape;
@@ -22,7 +22,30 @@ class Responsive {
   DeviceSize get device => _bp.device;
   TextSize get textBucket => _bp.text;
 
+  void allowRotation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
   /// Width-based scaler (base: 390 logical px).
+  void setOrientationLocks(String path) {
+    if (deviceType == DeviceType.tablet) {
+      if (!Constants.restrictedRotationPaths.contains(path)) {
+        allowRotation();
+        return;
+      }
+    }
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   double px(num base) {
     base = base.toDouble();
     const baseWidth = 390.0;
@@ -37,22 +60,22 @@ class Responsive {
     base = base.toDouble(); // make it double
 
     final sizeCurve = switch (device) {
-    DeviceSize.xxs => 0.75,
-    DeviceSize.xs => 0.80,
-    DeviceSize.s => 0.85,
-    DeviceSize.m => 0.90,
-    DeviceSize.l => 0.95,
-    DeviceSize.xl => 1.00,
-    DeviceSize.xxl => 1.10,
-    DeviceSize.xxxl => 1.20,
-    //   DeviceSize.xxs => 0.95,
-    //   DeviceSize.xs => 1.00,
-    //   DeviceSize.s => 1.05,
-    //   DeviceSize.m => 1.10,
-    //   DeviceSize.l => 1.15,
-    //   DeviceSize.xl => 1.20,
-    //   DeviceSize.xxl => 1.25,
-    //   DeviceSize.xxxl => 1.30,
+      DeviceSize.xxs => 0.75,
+      DeviceSize.xs => 0.80,
+      DeviceSize.s => 0.85,
+      DeviceSize.m => 0.90,
+      DeviceSize.l => 0.95,
+      DeviceSize.xl => 1.00,
+      DeviceSize.xxl => 1.10,
+      DeviceSize.xxxl => 1.20,
+      //   DeviceSize.xxs => 0.95,
+      //   DeviceSize.xs => 1.00,
+      //   DeviceSize.s => 1.05,
+      //   DeviceSize.m => 1.10,
+      //   DeviceSize.l => 1.15,
+      //   DeviceSize.xl => 1.20,
+      //   DeviceSize.xxl => 1.25,
+      //   DeviceSize.xxxl => 1.30,
     };
 
     final textCurve = switch (textBucket) {
@@ -70,14 +93,14 @@ class Responsive {
   double font(num base) {
     base = base.toDouble();
     final deviceBump = switch (device) {
-    DeviceSize.xxs => 0.75,
-    DeviceSize.xs => 0.80,
-    DeviceSize.s => 0.85,
-    DeviceSize.m => 0.90,
-    DeviceSize.l => 0.95,
-    DeviceSize.xl => 1.00,
-    DeviceSize.xxl => 1.10,
-    DeviceSize.xxxl => 1.20,
+      DeviceSize.xxs => 0.75,
+      DeviceSize.xs => 0.80,
+      DeviceSize.s => 0.85,
+      DeviceSize.m => 0.90,
+      DeviceSize.l => 0.95,
+      DeviceSize.xl => 1.00,
+      DeviceSize.xxl => 1.10,
+      DeviceSize.xxxl => 1.20,
     };
     // final deviceBump = switch (device) {
     //   DeviceSize.xxs => 0.98,

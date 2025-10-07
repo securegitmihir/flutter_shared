@@ -11,6 +11,8 @@ class AppBreakpoints {
 
 enum DisplaySize { compact, medium, large, largest }
 
+enum DeviceType { phone, tablet }
+
 enum TextSize { small, normal, large, xlarge, largest }
 
 enum DeviceSize { xxs, xs, s, m, l, xl, xxl, xxxl }
@@ -26,12 +28,14 @@ class BreakpointSnapshot {
     required this.device,
     required this.text,
     required this.orientation,
+    required this.deviceType,
   });
 
   final Size size;
   final double dpr;
   final double textScale;
   final DeviceSize device;
+  final DeviceType deviceType;
   final TextSize text;
   final ScreenOrient orientation;
 }
@@ -42,6 +46,12 @@ extension BreakpointRead on BuildContext {
 
     // width → device bucket
     final w = mq.size.width;
+
+    bool isTablet = (w >= 600) && (mq.size.shortestSide >= 600);
+    final DeviceType deviceType = isTablet
+        ? DeviceType.tablet
+        : DeviceType.phone;
+
     final DisplaySize displaySize;
     if (w >= AppBreakpoints.xtraLargeMin) {
       displaySize = DisplaySize.largest;
@@ -81,6 +91,7 @@ extension BreakpointRead on BuildContext {
       device: deviceSize,
       text: text,
       orientation: o,
+      deviceType: deviceType,
     );
   }
 

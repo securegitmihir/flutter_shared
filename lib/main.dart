@@ -7,7 +7,6 @@ import 'package:assisted_living/services/shared_pref_service.dart';
 import 'package:assisted_living/theme/app_theme.dart';
 import 'package:assisted_living/services/language/language_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,10 +26,6 @@ late HydratedStorage hydratedStorage;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
   await SharedPrefsService().init();
   await LogService.init();
   hydratedStorage = await HydratedStorage.build(

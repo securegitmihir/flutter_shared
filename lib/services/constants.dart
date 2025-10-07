@@ -1,3 +1,4 @@
+import 'package:assisted_living/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class Constants {
@@ -23,4 +24,5 @@ class Constants {
   ];
   static const defaultLanguage = 'en';
   static const language_key = 'i18n_lang';
+  static const restrictedRotationPaths = {AppRoutes.splash};
 }
