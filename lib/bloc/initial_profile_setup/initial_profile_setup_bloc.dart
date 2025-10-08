@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-import '../../services/validation_function.dart';
+import '../../utilities/validation_function.dart';
 
 part 'initial_profile_setup_event.dart';
 part 'initial_profile_setup_state.dart';
@@ -72,8 +72,8 @@ class InitialProfileSetupBloc
     required String gender,
     required String email, // email optional
   }) {
-    final nameErr   = ValidationFunctions.isUserNameValid(fullName.trim());
-    final yearErr   = ValidationFunctions.isBirthYearValid(birthYear);
+    final nameErr = ValidationFunctions.isUserNameValid(fullName.trim());
+    final yearErr = ValidationFunctions.isBirthYearValid(birthYear);
     final genderErr = ValidationFunctions.isGenderValid(gender);
     final trimmedEmail = email.trim();
     final emailErr = trimmedEmail.isEmpty
@@ -85,9 +85,9 @@ class InitialProfileSetupBloc
 
     final noErrors =
         nameErr == null &&
-            yearErr == null &&
-            genderErr == null &&
-            (trimmedEmail.isEmpty || emailErr == null);
+        yearErr == null &&
+        genderErr == null &&
+        (trimmedEmail.isEmpty || emailErr == null);
 
     return requiredFilled && noErrors;
   }
@@ -145,13 +145,15 @@ class InitialProfileSetupBloc
   }
 
   void _onEmailChanged(
-      EmailChanged event,
-      Emitter<InitialProfileSetupState> emit,
-      ) {
+    EmailChanged event,
+    Emitter<InitialProfileSetupState> emit,
+  ) {
     final trimmed = event.email.trim();
 
     // No error when empty. Validate only if user typed something.
-    final error = trimmed.isEmpty ? null : ValidationFunctions.isEmailValid(trimmed);
+    final error = trimmed.isEmpty
+        ? null
+        : ValidationFunctions.isEmailValid(trimmed);
 
     final isStepValid = _validateStep(
       fullName: state.fullName,

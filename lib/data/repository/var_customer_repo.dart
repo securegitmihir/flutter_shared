@@ -1,4 +1,4 @@
-import '../../services/app_exception.dart';
+import '../../utilities/app_exception.dart';
 import '../data_provider/var_customer_dp.dart';
 import '../models/login_response_model.dart';
 import '../models/validate_mobile_no_model.dart';
@@ -9,7 +9,7 @@ class VarCustomerRepository {
   VarCustomerRepository(this.varCustomerDataProvider);
 
   Future<ValidationResponse> validateCustomerMobile(data) async {
-  // Future<ValidationResponse> validateCustomerMobile(data) async {
+    // Future<ValidationResponse> validateCustomerMobile(data) async {
     try {
       // final validateCustomerMobileResponse = await varCustomerDataProvider.validateCustomerMobile(data);
       // if (validateCustomerMobileResponse['isSuccess'] == false) {

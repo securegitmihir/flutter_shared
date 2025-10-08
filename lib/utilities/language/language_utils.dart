@@ -1,6 +1,6 @@
 import 'dart:ui' show Locale, PlatformDispatcher;
 
-import 'package:assisted_living/services/constants.dart';
+import 'package:assisted_living/app/configuration/constants.dart';
 
 /// finds the best matching language from the supported language list
 /// based on the device preferred language.

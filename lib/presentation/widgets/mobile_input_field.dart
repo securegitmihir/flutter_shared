@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../services/app_colors.dart';
-import '../../services/enum.dart';
+import '../../app/configuration/enum.dart';
 import '../../services/font_styles.dart';
 import 'custom_text_widget.dart';
 
@@ -53,8 +53,8 @@ class _MobileInputFieldState extends State<MobileInputField> {
       widget.controller!.selection = TextSelection.collapsed(
         offset: widget.initialValue!.length,
       );
-    // if (widget.initialValue != null) {
-    //   widget.controller?.text = widget.initialValue!;
+      // if (widget.initialValue != null) {
+      //   widget.controller?.text = widget.initialValue!;
     }
   }
 
@@ -121,45 +121,49 @@ class _MobileInputFieldState extends State<MobileInputField> {
                 ),
                 child: widget.countryCodeStatus == ApiStatus.loading
                     ? CupertinoActivityIndicator(
-                  color: AppColors.primaryColor,
-                  // radius: 10.r,
-                  radius: r.px(10),
-                )
+                        color: AppColors.primaryColor,
+                        // radius: 10.r,
+                        radius: r.px(10),
+                      )
                     : widget.countryCodeStatus == ApiStatus.failure
-                    ? const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                )
+                    ? const Icon(Icons.error, color: Colors.red)
                     : DropdownButton<String>(
-                  dropdownColor: Colors.white,
-                  // padding: EdgeInsets.only(left: 8.w, right: 3.0.w, top: 0, bottom: 0),
-                  padding: EdgeInsets.only(left: r.space(8), right: r.space(3), top: r.space(0), bottom: r.space(0)),
-                  isExpanded: true,
-                  alignment: Alignment.center,
-                  isDense: false,
-                  // style: textStyle,
-                  style: Theme.of(context).textTheme
-        .rBodyMedium(context)!.copyWith(fontSize: r.font(14)),
-                  value: widget.selectedCode,
-                  onChanged: widget.enabled == true
-                      ? (String? newValue) {
-                    widget.onCountryCodeSelected(newValue!);
-                  }
-                      : null,
-                  underline: const SizedBox.shrink(),
-                  items: widget.mobileCodes.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: CustomTextWidget(
-                        value,
-                        overflow: TextOverflow.ellipsis,
+                        dropdownColor: Colors.white,
+                        // padding: EdgeInsets.only(left: 8.w, right: 3.0.w, top: 0, bottom: 0),
+                        padding: EdgeInsets.only(
+                          left: r.space(8),
+                          right: r.space(3),
+                          top: r.space(0),
+                          bottom: r.space(0),
+                        ),
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        isDense: false,
                         // style: textStyle,
                         style: Theme.of(context).textTheme
-                            .rBodyMedium(context)!.copyWith(fontSize: r.font(14)),
+                            .rBodyMedium(context)!
+                            .copyWith(fontSize: r.font(14)),
+                        value: widget.selectedCode,
+                        onChanged: widget.enabled == true
+                            ? (String? newValue) {
+                                widget.onCountryCodeSelected(newValue!);
+                              }
+                            : null,
+                        underline: const SizedBox.shrink(),
+                        items: widget.mobileCodes.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: CustomTextWidget(
+                              value,
+                              overflow: TextOverflow.ellipsis,
+                              // style: textStyle,
+                              style: Theme.of(context).textTheme
+                                  .rBodyMedium(context)!
+                                  .copyWith(fontSize: r.font(14)),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    );
-                  }).toList(),
-                ),
                 // CustomTextWidget(
                 //   widget.mobileCodes,
                 //   style: TextStyle(color: AppColors.countryCodeTextColor),
@@ -192,18 +196,24 @@ class _MobileInputFieldState extends State<MobileInputField> {
                   alignment: Alignment.center,
                   child: TextFormField(
                     controller: widget.controller,
-                    initialValue: widget.controller == null ? widget.initialValue : null,
+                    initialValue: widget.controller == null
+                        ? widget.initialValue
+                        : null,
                     keyboardType: TextInputType.phone,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
                       // contentPadding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
-                      contentPadding: EdgeInsets.symmetric(vertical: r.space(6), horizontal: r.space(12)),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: r.space(6),
+                        horizontal: r.space(12),
+                      ),
                     ),
                     enabled: widget.enabled,
                     style: Theme.of(context).textTheme
-        .rBodyMedium(context)!.copyWith(fontSize: r.font(16)),
+                        .rBodyMedium(context)!
+                        .copyWith(fontSize: r.font(16)),
                     // TextStyle(
                     //   color: AppColors.hintTextColor,
                     //   fontSize: 16.sp,
@@ -295,9 +305,10 @@ class _MobileInputFieldState extends State<MobileInputField> {
             // padding: EdgeInsets.all(4.r),
             padding: EdgeInsets.all(r.space(4)),
             // child: CustomTextWidget(widget.errorText!, style: errorStyle),
-            child: CustomTextWidget(widget.errorText!,
-    style: Theme.of(context).textTheme
-        .rError(context)!),
+            child: CustomTextWidget(
+              widget.errorText!,
+              style: Theme.of(context).textTheme.rError(context)!,
+            ),
           ),
       ],
     );

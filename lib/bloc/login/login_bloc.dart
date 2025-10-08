@@ -7,9 +7,9 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import '../../data/models/country_code_model.dart';
 import '../../data/repository/otp_verification_repo.dart';
 import '../../data/repository/var_customer_repo.dart';
-import '../../services/enum.dart';
-import '../../services/utility_functions.dart';
-import '../../services/validation_function.dart';
+import '../../app/configuration/enum.dart';
+import '../../utilities/utility_functions.dart';
+import '../../utilities/validation_function.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -94,8 +94,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     // final data = {'loginid': enteredMobileNo};
     // emit(state.copyWith(enteredMobileNo: enteredMobileNo, otpSendStatus: ApiStatus.loading));
 
-    final enteredMobileNo =
-        state.enteredMobileNo ?? '';
+    final enteredMobileNo = state.enteredMobileNo ?? '';
     if (enteredMobileNo.isEmpty) {
       emit(
         state.copyWith(

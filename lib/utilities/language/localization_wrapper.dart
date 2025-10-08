@@ -1,9 +1,9 @@
 import 'package:assisted_living/data/data_provider/language_dp.dart';
 import 'package:assisted_living/data/repository/language_repo.dart';
-import 'package:assisted_living/services/constants.dart';
-import 'package:assisted_living/services/language/i18n_loader.dart';
-import 'package:assisted_living/services/language/language_state.dart';
-import 'package:assisted_living/services/language/language_utils.dart';
+import 'package:assisted_living/app/configuration/constants.dart';
+import 'package:assisted_living/utilities/language/i18n_loader.dart';
+import 'package:assisted_living/utilities/language/language_state.dart';
+import 'package:assisted_living/utilities/language/language_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

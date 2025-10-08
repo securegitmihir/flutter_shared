@@ -1,9 +1,8 @@
-import 'package:assisted_living/services/validation_mssg.dart';
+import 'package:assisted_living/app/configuration/validation_mssg.dart';
 
-import 'constants.dart';
+import '../app/configuration/constants.dart';
 
 class ValidationFunctions {
-
   static String? isMobileNumberValid(String? mobileNumber, int allowedLength) {
     if (mobileNumber == null || mobileNumber.isEmpty) {
       return MobileNumberValidationMsg.cantBeEmpty;

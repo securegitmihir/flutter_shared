@@ -1,6 +1,6 @@
 import 'package:assisted_living/app/routes/app_routes.dart';
-import 'package:assisted_living/services/constants.dart';
-import 'package:assisted_living/services/language/language_state.dart';
+import 'package:assisted_living/app/configuration/constants.dart';
+import 'package:assisted_living/utilities/language/language_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

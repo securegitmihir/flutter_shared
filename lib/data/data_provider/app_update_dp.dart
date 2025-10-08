@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import '../../services/app_url.dart';
+import '../../app/configuration/app_url.dart';
 import '../../services/base_api_services.dart';
 import '../../services/network_api_service.dart';
 import '../models/app_update_model.dart';

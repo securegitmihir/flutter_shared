@@ -2,13 +2,12 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import '../../services/validation_function.dart';
+import '../../utilities/validation_function.dart';
 
 part 'add_member_event.dart';
 part 'add_member_state.dart';
 
-class AddMemberBloc
-    extends HydratedBloc<AddMemberEvent, AddMemberState> {
+class AddMemberBloc extends HydratedBloc<AddMemberEvent, AddMemberState> {
   AddMemberBloc() : super(const AddMemberState()) {
     on<FullNameChanged>(_onFullNameChanged);
     on<RelationChanged>(_onRelationChanged);
@@ -41,10 +40,7 @@ class AddMemberBloc
     };
   }
 
-  void _onFullNameChanged(
-      FullNameChanged event,
-      Emitter<AddMemberState> emit,
-      ) {
+  void _onFullNameChanged(FullNameChanged event, Emitter<AddMemberState> emit) {
     final error = ValidationFunctions.isUserNameValid(event.fullName.trim());
 
     // final isStepValid = _validateStep(
@@ -61,10 +57,7 @@ class AddMemberBloc
     );
   }
 
-  void _onRelationChanged(
-      RelationChanged e,
-      Emitter<AddMemberState> emit,
-      ) {
+  void _onRelationChanged(RelationChanged e, Emitter<AddMemberState> emit) {
     // Optional: clear otherRelation when moving away from "Others".
     final nextOther = (e.relation == 'Others') ? state.otherRelation : '';
 
@@ -78,7 +71,10 @@ class AddMemberBloc
     );
   }
 
-  void _onOtherRelationChanged(OtherRelationChanged e, Emitter<AddMemberState> emit) {
+  void _onOtherRelationChanged(
+    OtherRelationChanged e,
+    Emitter<AddMemberState> emit,
+  ) {
     emit(
       state.copyWith(
         otherRelation: e.otherRelation,
@@ -88,10 +84,7 @@ class AddMemberBloc
     );
   }
 
-  bool _validateStep({
-    required String fullName,
-    String? relation,
-  }) {
+  bool _validateStep({required String fullName, String? relation}) {
     final nameErr = ValidationFunctions.isUserNameValid(fullName.trim());
     final requiredFilled = fullName.trim().isNotEmpty;
     final noErrors = nameErr == null;
@@ -99,20 +92,18 @@ class AddMemberBloc
   }
 
   FutureOr<void> _onValidateStep(
-      ValidateStep event,
-      Emitter<AddMemberState> emit,
-      ) {
-    final isStepValid = _validateStep(
-      fullName: state.fullName,
-    );
+    ValidateStep event,
+    Emitter<AddMemberState> emit,
+  ) {
+    final isStepValid = _validateStep(fullName: state.fullName);
 
     emit(state.copyWith(isStepValid: isStepValid));
   }
 
   FutureOr<void> _onResetValidation(
-      ResetValidation event,
-      Emitter<AddMemberState> emit,
-      ) {
+    ResetValidation event,
+    Emitter<AddMemberState> emit,
+  ) {
     emit(state.copyWith(isStepValid: false));
   }
 }

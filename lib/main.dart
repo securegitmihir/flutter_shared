@@ -1,11 +1,11 @@
 import 'package:assisted_living/bloc/auth/auth_bloc.dart';
 import 'package:assisted_living/bloc/initial_profile_setup/initial_profile_setup_bloc.dart';
 import 'package:assisted_living/bloc/otp_verification/otp_verification_bloc.dart';
-import 'package:assisted_living/services/language/localization_wrapper.dart';
+import 'package:assisted_living/utilities/language/localization_wrapper.dart';
 import 'package:assisted_living/services/log_service.dart';
 import 'package:assisted_living/services/shared_pref_service.dart';
 import 'package:assisted_living/theme/app_theme.dart';
-import 'package:assisted_living/services/language/language_state.dart';
+import 'package:assisted_living/utilities/language/language_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';

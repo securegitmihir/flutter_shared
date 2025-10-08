@@ -1,4 +1,3 @@
-import 'package:assisted_living/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';

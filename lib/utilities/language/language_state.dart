@@ -1,5 +1,5 @@
-import 'package:assisted_living/services/constants.dart';
-import 'package:assisted_living/services/language/language_utils.dart';
+import 'package:assisted_living/app/configuration/constants.dart';
+import 'package:assisted_living/utilities/language/language_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 

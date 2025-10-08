@@ -4,8 +4,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../data/models/country_code_model.dart';
 import '../../data/repository/common_repo.dart';
-import '../../services/app_exception.dart';
-import '../../services/validation_mssg.dart';
+import '../../utilities/app_exception.dart';
+import '../../app/configuration/validation_mssg.dart';
 
 part 'common_event.dart';
 part 'common_state.dart';
@@ -46,7 +46,10 @@ class CommonBloc extends HydratedBloc<CommonEvent, CommonState> {
   //     emit(MobileCodeFetched(mobileCodes: codeList));
   //   }
   // }
-  Future<void> _getMobileCode(GetMobileCode event, Emitter<CommonState> emit) async {
+  Future<void> _getMobileCode(
+    GetMobileCode event,
+    Emitter<CommonState> emit,
+  ) async {
     // If already cached in HydratedBloc, no need to fetch again
     if (state is MobileCodeFetched) {
       final cached = state as MobileCodeFetched;
@@ -62,7 +65,9 @@ class CommonBloc extends HydratedBloc<CommonEvent, CommonState> {
       final mobileCodeList = await commonRepository.getCountryCodeList(data);
 
       if (mobileCodeList == null || mobileCodeList.isEmpty) {
-        throw InvalidInputException(MobileCodeValidationMessage.notDefinedException);
+        throw InvalidInputException(
+          MobileCodeValidationMessage.notDefinedException,
+        );
       }
 
       emit(MobileCodeFetched(mobileCodes: mobileCodeList));
@@ -76,7 +81,9 @@ class CommonBloc extends HydratedBloc<CommonEvent, CommonState> {
     try {
       if (json['mobileCodes'] != null) {
         final list = (json['mobileCodes'] as List<dynamic>)
-            .map((e) => CountryMobileCodesList.fromJson(e as Map<String, dynamic>))
+            .map(
+              (e) => CountryMobileCodesList.fromJson(e as Map<String, dynamic>),
+            )
             .toList();
         return MobileCodeFetched(mobileCodes: list);
       }
@@ -89,9 +96,7 @@ class CommonBloc extends HydratedBloc<CommonEvent, CommonState> {
   @override
   Map<String, dynamic>? toJson(CommonState state) {
     if (state is MobileCodeFetched) {
-      return {
-        'mobileCodes': state.mobileCodes.map((e) => e.toJson()).toList(),
-      };
+      return {'mobileCodes': state.mobileCodes.map((e) => e.toJson()).toList()};
     }
     return null;
   }

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:assisted_living/services/constants.dart';
+import 'package:assisted_living/app/configuration/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data_provider/language_dp.dart';
-import 'package:assisted_living/services/fallback_strings.dart';
+import 'package:assisted_living/utilities/language/fallback_strings.dart';
 
 class LanguageRepository {
   final LanguageDataProvider languageDataProvider;

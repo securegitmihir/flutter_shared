@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-import 'app_exception.dart';
+import '../utilities/app_exception.dart';
 import 'base_api_services.dart';
-import 'constants.dart';
+import '../app/configuration/constants.dart';
 import 'log_service.dart';
 
 const duration = Duration(seconds: Constants.apiTimeout);
@@ -25,7 +25,8 @@ class NetworkApiService extends BaseApiServices {
       responseJson = returnResponse(response);
       print("GOT DATA IN RESPONSE :::::$responseJson");
       await LogService.logActivity(
-          "? GET Response [${response.statusCode}]: ${response.body}");
+        "? GET Response [${response.statusCode}]: ${response.body}",
+      );
     } on SocketException {
       await LogService.logActivity("? GET Request Failed: Network Error");
       throw FetchDataException('');
@@ -50,22 +51,25 @@ class NetworkApiService extends BaseApiServices {
       //   sessionId = userResponseModel.sessionid;
       // }
       String requestData = json.encode(data);
-      await LogService.logActivity("📡 POST Request: $url - Data: $requestData");
-      Response response =
-      await httpClient.post(
-          Uri.parse(url), body: json.encode(data), headers: addHeaders())
+      await LogService.logActivity(
+        "📡 POST Request: $url - Data: $requestData",
+      );
+      Response response = await httpClient
+          .post(Uri.parse(url), body: json.encode(data), headers: addHeaders())
           .timeout(duration);
       responseJson = returnResponse(response);
       print("GOT DATA IN RESPONSE :::::$responseJson");
       await LogService.logActivity(
-          "? POST Response [${response.statusCode}]: ${response.body}");
+        "? POST Response [${response.statusCode}]: ${response.body}",
+      );
     } on SocketException {
       await LogService.logActivity("? POST Request Failed: Network Error");
       throw FetchDataException('');
     } on UnauthorizedException {
       print('unauthorized');
       await LogService.logActivity(
-          "? POST Request Failed: Authentication Error");
+        "? POST Request Failed: Authentication Error",
+      );
       await HydratedBloc.storage.clear();
       throw UnauthorizedException('');
     } catch (e) {
@@ -80,28 +84,43 @@ class NetworkApiService extends BaseApiServices {
     dynamic responseJson;
     try {
       print("SENDING DATA IN REQUEST :::::$data");
-      final body =
-      data.entries.map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}').join('&');
+      final body = data.entries
+          .map(
+            (e) =>
+                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}',
+          )
+          .join('&');
       // final String userResponseString = await GetStorageUtils.getString(kUserResponseModel, '');
       // if (userResponseString.isNotEmpty) {
       //   final userResponseModel = UserResponseModel.fromJson(jsonDecode(userResponseString));
       //   jwtToken = userResponseModel.jwtToken;
       //   sessionId = userResponseModel.sessionid;
       // }
-      await LogService.logActivity("📡 POST (URL-Encoded) Request: $url - Data: $body");
-      Response response =
-      await httpClient.post(Uri.parse(url), body: body, headers: addUrlEncodedHeader()).timeout(duration);
+      await LogService.logActivity(
+        "📡 POST (URL-Encoded) Request: $url - Data: $body",
+      );
+      Response response = await httpClient
+          .post(Uri.parse(url), body: body, headers: addUrlEncodedHeader())
+          .timeout(duration);
       responseJson = returnResponse(response);
-      await LogService.logActivity("✅ POST (URL-Encoded) Response [${response.statusCode}]: ${response.body}");
+      await LogService.logActivity(
+        "✅ POST (URL-Encoded) Response [${response.statusCode}]: ${response.body}",
+      );
       print("GOT DATA IN RESPONSE :::::$responseJson");
-      await LogService.logActivity("? POST (URL-Encoded) Response [${response.statusCode}]: ${response.body}");
+      await LogService.logActivity(
+        "? POST (URL-Encoded) Response [${response.statusCode}]: ${response.body}",
+      );
     } on SocketException {
       print('sockect Exception');
-      await LogService.logActivity("❌ POST (URL-Encoded) Request Failed: Network Error");
+      await LogService.logActivity(
+        "❌ POST (URL-Encoded) Request Failed: Network Error",
+      );
       throw FetchDataException('');
     } on UnauthorizedException {
       print('unauthorized');
-      await LogService.logActivity("❌ POST (URL-Encoded) Request Failed: Authentication Error");
+      await LogService.logActivity(
+        "❌ POST (URL-Encoded) Request Failed: Authentication Error",
+      );
       await HydratedBloc.storage.clear();
       throw UnauthorizedException('');
     } catch (e) {
@@ -131,8 +150,10 @@ class NetworkApiService extends BaseApiServices {
   dynamic addHeaders() {
     Map<String, String> data = {};
     data.putIfAbsent('Content-Type', () => 'application/json');
-    if (sessionId != null) data.putIfAbsent('Session-id', () => sessionId.toString());
-    if (jwtToken != null) data.putIfAbsent('Authorization', () => "Bearer $jwtToken");
+    if (sessionId != null)
+      data.putIfAbsent('Session-id', () => sessionId.toString());
+    if (jwtToken != null)
+      data.putIfAbsent('Authorization', () => "Bearer $jwtToken");
     data.putIfAbsent('Request-id', () => '1');
 
     return data;
@@ -141,10 +162,11 @@ class NetworkApiService extends BaseApiServices {
   dynamic addUrlEncodedHeader() {
     Map<String, String> data = {};
     data.putIfAbsent('Content-Type', () => 'application/x-www-form-urlencoded');
-    if (sessionId != null) data.putIfAbsent('Session-id', () => sessionId.toString());
-    if (jwtToken != null) data.putIfAbsent('Authorization', () => "Bearer $jwtToken");
+    if (sessionId != null)
+      data.putIfAbsent('Session-id', () => sessionId.toString());
+    if (jwtToken != null)
+      data.putIfAbsent('Authorization', () => "Bearer $jwtToken");
     data.putIfAbsent('Request-id', () => '1');
     return data;
   }
-
 }

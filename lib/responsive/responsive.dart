@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:assisted_living/services/constants.dart';
+import 'package:assisted_living/app/configuration/constants.dart';
 import 'breakpoints.dart';
 import 'package:flutter/material.dart';
 part 'package:assisted_living/responsive/font/font_responsive.dart';

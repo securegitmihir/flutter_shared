@@ -4,17 +4,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/repository/otp_verification_repo.dart';
-import '../../services/validation_function.dart';
+import '../../utilities/validation_function.dart';
 import '../../services/network_api_service.dart';
 
-part 'otp_verification_event.dart';part 'otp_verification_state.dart';
+part 'otp_verification_event.dart';
+part 'otp_verification_state.dart';
 
-class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationState> {
+class OtpVerificationBloc
+    extends Bloc<OtpVerificationEvent, OtpVerificationState> {
   Timer? _timer;
   OTPVerificationRepository otpVerificationRepository;
 
   OtpVerificationBloc(this.otpVerificationRepository)
-      : super(const OtpVerificationInitial(resendOtpLoading: false, resendOtpSuccess: true)) {
+    : super(
+        const OtpVerificationInitial(
+          resendOtpLoading: false,
+          resendOtpSuccess: true,
+        ),
+      ) {
     on<VerifyButtonClicked>(_onVerifyButtonClicked);
     on<OTPEntered>(_onOtpEntered);
     on<Tick>(_onTick);
@@ -24,7 +31,10 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
     on<ResetEvent>(_onResetEvent);
   }
 
-  void _onVerifyButtonClicked(VerifyButtonClicked event, Emitter<OtpVerificationState> emit) {
+  void _onVerifyButtonClicked(
+    VerifyButtonClicked event,
+    Emitter<OtpVerificationState> emit,
+  ) {
     final state = this.state;
 
     if (state.actualOtp == event.enteredOtp) {
@@ -93,16 +103,16 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
     _timer?.cancel();
     add(Tick(duration: event.time));
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      add(
-        Tick(
-          duration: event.time - timer.tick,
-        ),
-      );
+      add(Tick(duration: event.time - timer.tick));
     });
   }
 
-  void _onResendOTPClicked(ResendOTPClicked event, Emitter<OtpVerificationState> emit) async {
+  void _onResendOTPClicked(
+    ResendOTPClicked event,
+    Emitter<OtpVerificationState> emit,
+  ) async {
     final state = this.state;
+
     /// to handle the erro not clearning issue and other related issues with the otp resend
     emit(
       OtpVerificationState(
@@ -119,7 +129,9 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
       ),
     );
     try {
-      final otpResponse = await otpVerificationRepository.getOTP(int.tryParse(event.enteredMobileNumber));
+      final otpResponse = await otpVerificationRepository.getOTP(
+        int.tryParse(event.enteredMobileNumber),
+      );
       // await showNotification("OTP Received", otpResponse);
       /// to handle the erro not clearning issue and other related issues with the otp resend
       if (otpResponse == null || otpResponse.toString().isEmpty) {
@@ -143,45 +155,52 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             resendOtpSuccess: true,
           ),
         );
-        add(
-          StartTimer(time: event.time),
-        );
+        add(StartTimer(time: event.time));
       }
     } catch (e) {
-      emit(
-        GetOTPFailure(
-          error: e.toString(),
-        ),
-      );
+      emit(GetOTPFailure(error: e.toString()));
+
       /// to handle the erro not clearning issue and other related issues with the otp resend
       emit(
         OtpVerificationState(
-            enteredOtp: '',
-            isOtpValid: false,
-            otpMatched: false,
-            // enteredOtp: state.enteredOtp,
-            //isOtpValid: state.isOtpValid,
-            // otpMatched: state.otpMatched,
-            duration: state.duration,
-            actualOtp: state.actualOtp,
-            resendOtpLoading: false,
-            resendOtpSuccess: false),
+          enteredOtp: '',
+          isOtpValid: false,
+          otpMatched: false,
+          // enteredOtp: state.enteredOtp,
+          //isOtpValid: state.isOtpValid,
+          // otpMatched: state.otpMatched,
+          duration: state.duration,
+          actualOtp: state.actualOtp,
+          resendOtpLoading: false,
+          resendOtpSuccess: false,
+        ),
       );
     }
   }
 
-  void _onSetNewOTPEvent(SetNewOTPEvent event, Emitter<OtpVerificationState> emit) {
-    emit(OtpVerificationState(
+  void _onSetNewOTPEvent(
+    SetNewOTPEvent event,
+    Emitter<OtpVerificationState> emit,
+  ) {
+    emit(
+      OtpVerificationState(
         actualOtp: event.otp,
         isOtpValid: state.isOtpValid,
         enteredOtp: state.enteredOtp,
         otpMatched: state.otpMatched,
         duration: state.duration,
         resendOtpLoading: state.resendOtpLoading,
-        resendOtpSuccess: state.resendOtpSuccess));
+        resendOtpSuccess: state.resendOtpSuccess,
+      ),
+    );
   }
 
   void _onResetEvent(ResetEvent event, Emitter<OtpVerificationState> emit) {
-    emit(const OtpVerificationInitial(resendOtpLoading: false, resendOtpSuccess: true));
+    emit(
+      const OtpVerificationInitial(
+        resendOtpLoading: false,
+        resendOtpSuccess: true,
+      ),
+    );
   }
 }
