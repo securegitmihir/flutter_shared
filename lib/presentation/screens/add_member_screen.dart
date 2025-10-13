@@ -89,7 +89,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../bloc/add_member/add_member_bloc.dart';
 import '../../services/app_colors.dart';
 import '../widgets/avatar_picker.dart';
@@ -110,8 +109,8 @@ class AddMemberScreen extends StatefulWidget {
 class _AddMemberScreenState extends State<AddMemberScreen> {
   late var _nameCtrl = TextEditingController();
   late var _otherRelationCtrl = TextEditingController();
-  bool _saving = false;
-  final _picker = ImagePicker();
+  // bool _saving = false;
+  // final _picker = ImagePicker();
   File? _avatarFile;
 
   final _relations = const <String>[
@@ -149,11 +148,11 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
           "addMember.addMember".tr(),
           style: Theme.of(
             context,
-          ).textTheme.rTitleMedium(context)!.copyWith(color: AppColors.btnTextColor),
+          ).textTheme.rTitleMedium(context)!.copyWith(color: AppColors.whiteColor),
         ),
-        foregroundColor: AppColors.btnTextColor,
+        foregroundColor: AppColors.whiteColor,
         gradient: const LinearGradient(
-          colors: [AppColors.appBarColor, AppColors.appBarDarkColor],
+          colors: [AppColors.gradientLightColor, AppColors.gradientDarkColor],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -190,9 +189,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             AvatarPicker(
                               radius: r.px(55),
                               file: _avatarFile,
-                              badgeColor: AppColors.appBarColor,
+                              badgeColor: AppColors.gradientLightColor,
                               onTap: () async {
-                                final f = await ImagePickerHelper.pickImageWithSheet(context);
+                                final f = await ImagePickerHelper.pickImageWithSheet(context, editMode: EditMode.cropOnly);
                                 if (!mounted) return;
                                 if (f != null) setState(() => _avatarFile = f);
                               },
@@ -378,18 +377,18 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
     );
   }
 
-  Future<void> _save() async {
-    setState(() => _saving = true);
-    // TODO: call your bloc/repo to save member
-    await Future.delayed(const Duration(milliseconds: 400));
-    if (!mounted) return;
-    setState(() => _saving = false);
-
-    // Close and return data if you want:
-    Navigator.pop(context, {
-      'name': _nameCtrl.text.trim(),
-      // 'relation': _relation,
-      'avatarPath': _avatarFile?.path,
-    });
-  }
+  // Future<void> _save() async {
+  //   setState(() => _saving = true);
+  //   // TODO: call your bloc/repo to save member
+  //   await Future.delayed(const Duration(milliseconds: 400));
+  //   if (!mounted) return;
+  //   setState(() => _saving = false);
+  //
+  //   // Close and return data if you want:
+  //   Navigator.pop(context, {
+  //     'name': _nameCtrl.text.trim(),
+  //     // 'relation': _relation,
+  //     'avatarPath': _avatarFile?.path,
+  //   });
+  // }
 }

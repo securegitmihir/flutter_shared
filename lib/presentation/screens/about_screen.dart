@@ -9,7 +9,7 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String _html =
+    final String html =
     '''
 <div style="background:#f7f7fb; padding:16px;">
   <div style="background:#ffffff; padding:20px; border-radius:14px; border:1px solid #e7e7ef; max-width:900px; margin:0 auto;">
@@ -88,7 +88,7 @@ class AboutScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: BackendDrivenUiService(
-          html: _html,
+          html: html,
           onTapCall: (url) async {
             if (url.contains('back')) {
               // ScaffoldMessenger.of(

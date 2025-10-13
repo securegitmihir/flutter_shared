@@ -83,11 +83,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
             'Diary',
             style: Theme.of(context).textTheme
                 .rTitleMedium(context)!
-                .copyWith(color: AppColors.btnTextColor),
+                .copyWith(color: AppColors.whiteColor),
           ),
-          foregroundColor: AppColors.btnTextColor,
+          foregroundColor: AppColors.whiteColor,
           gradient: const LinearGradient(
-            colors: [AppColors.appBarColor, AppColors.appBarDarkColor],
+            colors: [AppColors.gradientLightColor, AppColors.gradientDarkColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

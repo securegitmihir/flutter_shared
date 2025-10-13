@@ -9,7 +9,7 @@ class HelpSupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String _html = '''
+    final String html = '''
 <div style="background:#f7f7fb; padding:16px;">
   <div style="background:#ffffff; padding:20px; border-radius:14px; border:1px solid #e7e7ef; max-width:900px; margin:0 auto;">
     <h1 style="margin:0 0 6px; color:#1c1c28; text-align:center;">Help &amp; Support</h1>
@@ -93,7 +93,7 @@ class HelpSupportScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: BackendDrivenUiService(
-          html: _html,
+          html: html,
           onTapCall: (url) async {
             if (url.contains('back')) {
               Navigator.pop(context, true);

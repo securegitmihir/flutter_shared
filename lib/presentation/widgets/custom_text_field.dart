@@ -2,10 +2,7 @@ import 'package:assisted_living/responsive/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../services/app_colors.dart';
-import '../../services/font_styles.dart';
 import 'custom_text_widget.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -163,7 +160,7 @@ class CustomTextField extends StatelessWidget {
                             // border: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textBoxColor, width: 1.w)),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.textBoxColor,
+                                color: AppColors.borderColor,
                                 width: r.space(1),
                               ),
                             ),
@@ -228,7 +225,7 @@ class CustomTextField extends StatelessWidget {
                           // border: OutlineInputBorder(borderSide: BorderSide(color: AppColors.textBoxColor, width: 1.w)),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: AppColors.dropdownBorderColor,
+                              color: AppColors.borderColor,
                               width: r.space(1),
                             ),
                           ),

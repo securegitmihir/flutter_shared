@@ -1,8 +1,6 @@
 import 'package:assisted_living/presentation/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:assisted_living/services/backend_driven_ui_service.dart';
-
-import '../../app/routes/app_routes.dart';
 import '../widgets/custom_appbar.dart';
 
 class TermsScreen extends StatelessWidget {
@@ -10,7 +8,7 @@ class TermsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String _html =
+    final String html =
     '''
  <!-- Terms & Conditions - Flutter friendly (inline CSS only) -->
   <div style="background:#f7f7fb; padding:16px;">
@@ -132,7 +130,7 @@ class TermsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: BackendDrivenUiService(
-          html: _html,
+          html: html,
           onTapCall: (url) async {
             if (url.contains('back')) {
               // ScaffoldMessenger.of(

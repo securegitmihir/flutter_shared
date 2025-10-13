@@ -6,6 +6,7 @@ import 'package:assisted_living/responsive/responsive.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../app/configuration/enum.dart';
 import '../../app/routes/app_routes.dart';
 import '../../bloc/common/common_bloc.dart';
 import '../../bloc/login/login_bloc.dart';
@@ -13,11 +14,9 @@ import '../../bloc/otp_verification/otp_verification_bloc.dart';
 import '../../data/data_provider/app_update_dp.dart';
 import '../../data/models/country_code_model.dart';
 import '../../data/repository/app_update_repo.dart';
-import '../../app/configuration/enum.dart';
 import '../../services/snackbar_service.dart';
 import '../../utilities/utility_functions.dart';
 import '../widgets/app_update_prompter.dart';
-import '../widgets/language_pop_up.dart';
 import '../widgets/otp_box.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -113,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }
             if (state is MobileCodeFailure) {
               mobileCodeStatus = ApiStatus.failure;
-              SnackBarService.showErrorSnackBar(content: state.error!);
+              SnackBarService.showErrorSnackBar(content: state.error!, context: context);
               _countryCodeFetchFailure = true;
             }
           },
@@ -140,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 } else if (state is LoginError) {
                   SnackBarService.showErrorSnackBar(
                     content: state.loginErrorMsg.toString(),
+                    context: context
                   );
                 }
               },

@@ -31,7 +31,7 @@ class AvatarPicker extends StatelessWidget {
             backgroundColor: const Color(0xFFE6ECE9),
             backgroundImage: file != null ? FileImage(file!) : null,
             child: file == null
-                ? Icon(placeholderIcon, size: radius * 2.0, color: AppColors.btnTextColor)
+                ? Icon(placeholderIcon, size: radius * 2.0, color: AppColors.whiteColor)
                 : null,
           ),
         ),

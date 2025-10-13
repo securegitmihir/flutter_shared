@@ -1,9 +1,7 @@
 import 'package:assisted_living/responsive/responsive.dart';
 import 'package:assisted_living/services/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../services/font_styles.dart';
 
 /// One tab item (icon + label + optional badge)
 class NavBarItem {
@@ -47,7 +45,7 @@ class CustomBottomNavBar extends StatelessWidget {
     this.iconSize = 22,
     this.activeIconSize = 24,
     this.elevation = 8,
-    this.backgroundColor = AppColors.btnTextColor,
+    this.backgroundColor = AppColors.whiteColor,
     this.activeColor = AppColors.activeNavBarColor,
     this.inactiveColor = AppColors.inactiveNavBarColor,
     this.indicatorColor = AppColors.activeNavBarColor,
@@ -107,9 +105,9 @@ class CustomBottomNavBar extends StatelessWidget {
                                 ? (item.activeIcon ?? item.icon)
                                 : item.icon,
                             color: selected ? activeColor : inactiveColor,
-                            size: (selected ? activeIconSize : iconSize).sp,
+                            size: r.px((selected ? activeIconSize : iconSize)),
                           ),
-                          SizedBox(height: 4.h),
+                          SizedBox(height: r.px(4)),
                           Text(
                             item.label,
                             maxLines: 1,
@@ -150,7 +148,7 @@ class CustomBottomNavBar extends StatelessWidget {
                               '${item.badgeCount}',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 10.sp,
+                                fontSize: r.font(10),
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

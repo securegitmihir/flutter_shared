@@ -1,8 +1,5 @@
 import 'package:assisted_living/responsive/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../services/font_styles.dart';
 import 'custom_text_widget.dart';
 
 class RadioOption<T> {

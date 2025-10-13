@@ -2,10 +2,8 @@ import 'package:assisted_living/responsive/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../services/app_colors.dart';
 import '../../app/configuration/enum.dart';
-import '../../services/font_styles.dart';
+import '../../services/app_colors.dart';
 import 'custom_text_widget.dart';
 
 class MobileInputField extends StatefulWidget {
@@ -115,7 +113,7 @@ class _MobileInputFieldState extends State<MobileInputField> {
                 // height: double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.dropdownBorderColor),
+                  border: Border.all(color: AppColors.borderColor),
                   // borderRadius: BorderRadius.circular(4.r),
                   borderRadius: BorderRadius.circular(r.px(4)),
                 ),
@@ -189,7 +187,7 @@ class _MobileInputFieldState extends State<MobileInputField> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.dropdownBorderColor),
+                    border: Border.all(color: AppColors.borderColor),
                     // borderRadius: BorderRadius.circular(4.r),
                     borderRadius: BorderRadius.circular(r.px(4)),
                   ),

@@ -84,7 +84,9 @@ class AddMemberBloc extends HydratedBloc<AddMemberEvent, AddMemberState> {
     );
   }
 
-  bool _validateStep({required String fullName, String? relation}) {
+  bool _validateStep({
+    required String fullName
+  }) {
     final nameErr = ValidationFunctions.isUserNameValid(fullName.trim());
     final requiredFilled = fullName.trim().isNotEmpty;
     final noErrors = nameErr == null;

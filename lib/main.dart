@@ -1,3 +1,5 @@
+
+import 'package:assisted_living/bloc/add_member/add_member_bloc.dart';
 import 'package:assisted_living/bloc/auth/auth_bloc.dart';
 import 'package:assisted_living/bloc/initial_profile_setup/initial_profile_setup_bloc.dart';
 import 'package:assisted_living/bloc/otp_verification/otp_verification_bloc.dart';
@@ -11,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'app/app.dart';
 import 'bloc/common/common_bloc.dart';
 import 'bloc/login/login_bloc.dart';
@@ -34,8 +35,6 @@ void main() async {
     ),
   );
   HydratedBloc.storage = hydratedStorage;
-
-  final localStorage = await SharedPreferences.getInstance();
 
   runApp(
     MultiRepositoryProvider(
@@ -68,15 +67,12 @@ void main() async {
           ),
           BlocProvider(create: (_) => AuthBloc()),
           BlocProvider(create: (_) => InitialProfileSetupBloc()),
+          BlocProvider(create: (_) => AddMemberBloc()),
         ],
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => ThemeState()),
-            Provider(create: (_) => localStorage),
-            ChangeNotifierProvider(
-              create: (buildContext) =>
-                  LanguageState.initiateState(localStorage),
-            ),
+            ChangeNotifierProvider(create: (_) => LanguageState.initiateState()),
           ],
           child: LocalizationWrapper(child: MyApp()),
         ),

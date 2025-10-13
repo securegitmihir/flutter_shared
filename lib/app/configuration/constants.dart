@@ -23,6 +23,6 @@ class Constants {
     ),
   ];
   static const defaultLanguage = 'en';
-  static const language_key = 'i18n_lang';
+  static const languageKey = 'i18n_lang';
   static const restrictedRotationPaths = {AppRoutes.splash};
 }

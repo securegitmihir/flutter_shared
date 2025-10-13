@@ -13,7 +13,6 @@ import '../../services/app_colors.dart';
 import '../widgets/avatar_picker.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/image_picker_helper.dart';
-import '../widgets/text_fit.dart';
 import 'contact_screen.dart';
 
 class MainDashboardScreen extends StatefulWidget {
@@ -81,19 +80,20 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                       child: Container(
                         color: Colors.white,
                         padding: EdgeInsets.all(r.space(12)),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AvatarPicker(
-                              radius: r.px(40),
+                              radius: r.px(50),
                               file: _avatarFile,
-                              badgeColor: AppColors.appBarColor,
+                              badgeColor: AppColors.gradientLightColor,
                               onTap: () async {
-                                final f = await ImagePickerHelper.pickImageWithSheet(context);
+                                final f = await ImagePickerHelper.pickImageWithSheet(context, editMode: EditMode.cropOnly);
                                 if (!mounted) return;
                                 if (f != null) setState(() => _avatarFile = f);
                               },
                             ),
-                            SizedBox(width: r.px(16)),
+                            SizedBox(height: r.px(10)),
                             Expanded(
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
@@ -101,66 +101,71 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                                       .rBodyMedium(context)!
                                       .copyWith(fontSize: r.font(20));
 
-                                  final editIconSize = r.px(18);
-                                  final gap = r.px(6);
-                                  final nameMaxWidth =
-                                      (constraints.maxWidth -
-                                              editIconSize -
-                                              gap)
-                                          .clamp(0.0, constraints.maxWidth);
+                                  // final editIconSize = r.px(18);
+                                  // final gap = r.px(6);
+                                  // final nameMaxWidth =
+                                  //     (constraints.maxWidth -
+                                  //             editIconSize -
+                                  //             gap)
+                                  //         .clamp(0.0, constraints.maxWidth);
 
-                                  final display = truncateToFit(
-                                    text: widget.username,
-                                    style: style,
-                                    // maxWidth: constraints.maxWidth,
-                                    maxWidth: nameMaxWidth,
-                                    textDirection: Directionality.of(context),
-                                  );
-                                  // return CustomTextWidget(
-                                  //   display,
+                                  // final nameMaxWidth = constraints.maxWidth;
+                                  //
+                                  // final display = truncateToFit(
+                                  //   text: widget.username,
                                   //   style: style,
-                                  //   maxLines: 1,
-                                  //   overflow: TextOverflow.clip,
-                                  //   softWrap: false,
-                                  return Row(
-                                    children: [
-                                      // name (trimmed to fit)
-                                      ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxWidth: nameMaxWidth,
-                                        ),
-                                        child: CustomTextWidget(
-                                          display,
-                                          style: style,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.clip,
-                                          softWrap: false,
-                                        ),
-                                      ),
-                                      SizedBox(width: gap),
-                                      // pencil
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          Navigator.pushNamed(
-                                            context,
-                                            AppRoutes.profileSetup,
-                                          );
-                                        },
-                                        borderRadius: BorderRadius.circular(
-                                          r.px(12),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.all(r.px(4)),
-                                          child: Icon(
-                                            Icons.edit,
-                                            size: editIconSize,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  //   // maxWidth: constraints.maxWidth,
+                                  //   maxWidth: nameMaxWidth,
+                                  //   textDirection: Directionality.of(context),
+                                  // );
+                                  return CustomTextWidget(
+                                    // display,
+                                    widget.username,
+                                    style: style,
+                                    maxLines: 1,
+                                    // overflow: TextOverflow.clip,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
                                   );
+                                  // return Row(
+                                  //   children: [
+                                  //     // name (trimmed to fit)
+                                  //     ConstrainedBox(
+                                  //       constraints: BoxConstraints(
+                                  //         maxWidth: nameMaxWidth,
+                                  //       ),
+                                  //       child: CustomTextWidget(
+                                  //         display,
+                                  //         style: style,
+                                  //         maxLines: 2,
+                                  //         overflow: TextOverflow.clip,
+                                  //         softWrap: false,
+                                  //       ),
+                                  //     ),
+                                  //     SizedBox(width: gap),
+                                  //     // pencil
+                                  //     InkWell(
+                                  //       onTap: () {
+                                  //         Navigator.pop(context);
+                                  //         Navigator.pushNamed(
+                                  //           context,
+                                  //           AppRoutes.profileSetup,
+                                  //         );
+                                  //       },
+                                  //       borderRadius: BorderRadius.circular(
+                                  //         r.px(12),
+                                  //       ),
+                                  //       child: Padding(
+                                  //         padding: EdgeInsets.all(r.px(4)),
+                                  //         child: Icon(
+                                  //           Icons.edit,
+                                  //           size: editIconSize,
+                                  //           color: Colors.grey[700],
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // );
                                 },
                               ),
                             ),
@@ -686,14 +691,14 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
               context,
             ).textTheme.rTitleMedium(context)!.copyWith(color: Colors.white);
 
-            final display = truncateToFit(
-              text: widget.username,
-              style: style,
-              maxWidth: nameBoxWidth,
-              textDirection: Directionality.of(context),
-            );
+            // final display = truncateToFit(
+            //   text: widget.username,
+            //   style: style,
+            //   maxWidth: nameBoxWidth,
+            //   textDirection: Directionality.of(context),
+            // );
 
-            final g = (widget.gender ?? '').trim().toLowerCase();
+            final g = (widget.gender).trim().toLowerCase();
             final IconData? genderIcon = (g == 'female')
                 ? Icons.woman
                 : (g == 'male')
@@ -736,11 +741,13 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                 ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: nameBoxWidth),
                   child: CustomTextWidget(
-                    display, // already trimmed to fit
+                    // display, // already trimmed to fit
+                    widget.username,
                     maxLines: 1,
                     softWrap: false,
-                    overflow:
-                        TextOverflow.clip, // no ellipsis, we trimmed ourselves
+                    overflow: TextOverflow.ellipsis,
+                    // overflow:
+                    //     TextOverflow.clip, // no ellipsis, we trimmed ourselves
                     style: style,
                   ),
                 ),
@@ -759,9 +766,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
             );
           },
         ),
-        foregroundColor: AppColors.btnTextColor,
+        foregroundColor: AppColors.whiteColor,
         gradient: const LinearGradient(
-          colors: [AppColors.appBarColor, AppColors.appBarDarkColor],
+          colors: [AppColors.gradientLightColor, AppColors.gradientDarkColor],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

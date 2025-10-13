@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/initial_profile_setup/initial_profile_setup_bloc.dart';
-import '../widgets/calender_auto_complete.dart';
 import '../widgets/custom_radio_button.dart';
 
 class ProfileSetup extends StatefulWidget {
@@ -131,6 +130,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                               FocusScope.of(context).unfocus();
                               final current = int.tryParse(state.birthYear);
                               final yr = await _showYearPicker(context, initialYear: current);
+                              if(!context.mounted) return;
                               if (yr != null) {
                                 context.read<InitialProfileSetupBloc>().add(BirthYearChanged(yr.toString()));
                               }
@@ -364,55 +364,55 @@ class _ProfileSetupState extends State<ProfileSetup> {
     return picked;
   }
 
-  Future<int?> _pickYearWithCalendar(BuildContext context, {int? initialYear}) async {
-    final now = DateTime.now();
-    final first = DateTime(1950, 1, 1);
-    final last  = DateTime(now.year, 12, 31);
-    DateTime init = DateTime(initialYear ?? now.year, 1, 1);
-    if (init.isBefore(first)) init = first;
-    if (init.isAfter(last))  init = last;
-
-    final date = await showDatePicker(
-      context: context,
-      initialDate: init,
-      firstDate: first,
-      lastDate: last,
-      helpText: 'Select birth year',
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      initialDatePickerMode: DatePickerMode.year, // ← starts in year grid
-      builder: (context, child) {
-        final theme = Theme.of(context);
-        return Theme(
-          data: theme.copyWith(
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: AppColors.appBarColor),
-            ),
-            colorScheme: theme.colorScheme.copyWith(
-              primary: AppColors.appBarColor,   // header / selection accents
-              onPrimary: Colors.white,
-              surface: Colors.white,
-              onSurface: Colors.black87,
-            ),
-            datePickerTheme: DatePickerThemeData(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              headerBackgroundColor: AppColors.appBarColor,
-              headerForegroundColor: Colors.white,
-              yearBackgroundColor: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected)) return AppColors.appBarDarkColor;
-                return null;
-              }),
-              yearForegroundColor: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected)) return Colors.white;
-                return null;
-              }),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    return date?.year;
-  }
+  // Future<int?> _pickYearWithCalendar(BuildContext context, {int? initialYear}) async {
+  //   final now = DateTime.now();
+  //   final first = DateTime(1950, 1, 1);
+  //   final last  = DateTime(now.year, 12, 31);
+  //   DateTime init = DateTime(initialYear ?? now.year, 1, 1);
+  //   if (init.isBefore(first)) init = first;
+  //   if (init.isAfter(last))  init = last;
+  //
+  //   final date = await showDatePicker(
+  //     context: context,
+  //     initialDate: init,
+  //     firstDate: first,
+  //     lastDate: last,
+  //     helpText: 'Select birth year',
+  //     initialEntryMode: DatePickerEntryMode.calendarOnly,
+  //     initialDatePickerMode: DatePickerMode.year, // ← starts in year grid
+  //     builder: (context, child) {
+  //       final theme = Theme.of(context);
+  //       return Theme(
+  //         data: theme.copyWith(
+  //           textButtonTheme: TextButtonThemeData(
+  //             style: TextButton.styleFrom(foregroundColor: AppColors.appBarColor),
+  //           ),
+  //           colorScheme: theme.colorScheme.copyWith(
+  //             primary: AppColors.appBarColor,   // header / selection accents
+  //             onPrimary: Colors.white,
+  //             surface: Colors.white,
+  //             onSurface: Colors.black87,
+  //           ),
+  //           datePickerTheme: DatePickerThemeData(
+  //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  //             headerBackgroundColor: AppColors.appBarColor,
+  //             headerForegroundColor: Colors.white,
+  //             yearBackgroundColor: MaterialStateProperty.resolveWith((states) {
+  //               if (states.contains(MaterialState.selected)) return AppColors.appBarDarkColor;
+  //               return null;
+  //             }),
+  //             yearForegroundColor: MaterialStateProperty.resolveWith((states) {
+  //               if (states.contains(MaterialState.selected)) return Colors.white;
+  //               return null;
+  //             }),
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+  //
+  //   return date?.year;
+  // }
 
 }

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-// --- Choose ONE of the following imports depending on your mode ---
-import 'package:pro_image_editor/pro_image_editor.dart'; // full editor
-// import 'package:image_cropper/image_cropper.dart';     // crop-only
+// import 'package:pro_image_editor/pro_image_editor.dart'; // full editor
+import 'package:image_cropper/image_cropper.dart'; //crop only
 
 enum EditMode { full, cropOnly, none }
 
@@ -37,39 +36,65 @@ class ImagePickerHelper {
       if (editMode == EditMode.none) return File(x.path);
 
       // ---- Full editor path (WhatsApp-like) ----
-      if (editMode == EditMode.full) {
-        final bytes = await File(x.path).readAsBytes();
-
-        // Push the editor page and wait for edited bytes.
-        final Uint8List? edited = await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => ProImageEditor.memory(
-              bytes,
-              callbacks: ProImageEditorCallbacks(
-                onImageEditingComplete: (Uint8List editedBytes) {
-                  Navigator.of(context).pop(editedBytes);
-                  return Future.value(); // ⬅ satisfy Future<void>
-                },
-                // onCloseEditor: (EditorMode mode) {
-                //   // Called when user closes editor — mode tells how it was closed.
-                //   // Example: EditorMode.view, EditorMode.edit
-                //   Navigator.of(context).pop(null);
-                // },
-              ),
-            ),
-          ),
-        );
-
-        if (edited == null) return null;
-
-        // Persist edited bytes to a temp file so your avatar can use FileImage.
-        final temp = await _writeTempImage(edited, ext: _extFromPath(x.path));
-        return temp;
-      }
+      // if (editMode == EditMode.full) {
+      //   final bytes = await File(x.path).readAsBytes();
+      //
+      //   // Push the editor page and wait for edited bytes.
+      //   final Uint8List? edited = await Navigator.of(context).push(
+      //     MaterialPageRoute(
+      //       builder: (_) => ProImageEditor.memory(
+      //         bytes,
+      //         callbacks: ProImageEditorCallbacks(
+      //           onImageEditingComplete: (Uint8List editedBytes) {
+      //             Navigator.of(context).pop(editedBytes);
+      //             return Future.value(); // ⬅ satisfy Future<void>
+      //           },
+      //           // onCloseEditor: (EditorMode mode) {
+      //           //   // Called when user closes editor — mode tells how it was closed.
+      //           //   // Example: EditorMode.view, EditorMode.edit
+      //           //   Navigator.of(context).pop(null);
+      //           // },
+      //         ),
+      //       ),
+      //     ),
+      //   );
+      //
+      //   if (edited == null) return null;
+      //
+      //   // Persist edited bytes to a temp file so your avatar can use FileImage.
+      //   final temp = await _writeTempImage(edited, ext: _extFromPath(x.path));
+      //   return temp;
+      // }
 
       // ---- Crop-only path ----
       // If you prefer a native cropper UI (simple & fast).
       // Requires: image_cropper in pubspec + platform configs.
+
+      if (editMode == EditMode.cropOnly) {
+        final CroppedFile? cropped = await ImageCropper().cropImage(
+          sourcePath: x.path,
+
+          // Force square
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Edit photo',
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true,        // 🔒 fixes it to 1:1
+              hideBottomControls: false,    // optional
+            ),
+            IOSUiSettings(
+              title: 'Edit photo',
+              aspectRatioLockEnabled: true, // 🔒 fixes it to 1:1
+              resetAspectRatioEnabled: false, // optional: prevents unlocking
+            ),
+          ],
+        );
+
+        if (cropped == null) return null;
+        return File(cropped.path);
+      }
       // if (editMode == EditMode.cropOnly) {
       //   final CroppedFile? cropped = await ImageCropper().cropImage(
       //     sourcePath: x.path,

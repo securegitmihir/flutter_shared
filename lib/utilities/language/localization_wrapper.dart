@@ -7,7 +7,8 @@ import 'package:assisted_living/utilities/language/language_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/shared_pref_service.dart';
 
 class LocalizationWrapper extends StatelessWidget {
   final Widget child;
@@ -17,8 +18,8 @@ class LocalizationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // check if locally saved
-    final prefs = context.read<SharedPreferences>();
-    final savedLang = prefs.getString(Constants.language_key);
+    final prefs = SharedPrefsService();
+    final savedLang = prefs.getString(Constants.languageKey);
 
     // first time user gets system preference
     final systemBest = LanguageUtils.bestSupportedLanguage();
@@ -40,7 +41,7 @@ class LocalizationWrapper extends StatelessWidget {
             final langState = context.read<LanguageState>();
             langState.setCallback((locale) {
               context.setLocale(locale);
-              prefs.setString(Constants.language_key, locale.languageCode);
+              prefs.saveString(Constants.languageKey, locale.languageCode);
             });
           });
           return child;

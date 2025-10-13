@@ -20,14 +20,14 @@ class LanguageRepository {
   /// Fetches language JSON from server or local cache
   /// Caches the JSON and version in local storage
   /// If fetching fails, uses fallback strings
-  Future<Map<String, dynamic>> getLanguageJson(String lang) async {
+  Future<Map<String, dynamic>> getLanguageJson(String lang0) async {
     final prefs = await SharedPreferences.getInstance();
-    final _lang = prefs.getString(Constants.language_key) ?? lang;
-    final savedVer = prefs.getString(_kVer(_lang));
+    final lang = prefs.getString(Constants.languageKey) ?? lang0;
+    final savedVer = prefs.getString(_kVer(lang));
     final ns = _namespaces.join(',');
     // fetch version first, if different or not found, fetch new json
     try {
-      final vRes = await languageDataProvider.getLanguageVersion(ns, _lang);
+      final vRes = await languageDataProvider.getLanguageVersion(ns, lang);
 
       if (vRes.statusCode == 200) {
         final remoteVer = (jsonDecode(vRes.body)['version'] ?? '').toString();
@@ -37,19 +37,19 @@ class LanguageRepository {
           return jsonDecode(cached) as Map<String, dynamic>;
         }
 
-        final bRes = await languageDataProvider.getLanguageJson(ns, _lang);
+        final bRes = await languageDataProvider.getLanguageJson(ns, lang);
         if (bRes.statusCode == 200) {
-          await prefs.setString(_kJson(_lang), bRes.body);
-          await prefs.setString(_kVer(_lang), remoteVer);
+          await prefs.setString(_kJson(lang), bRes.body);
+          await prefs.setString(_kVer(lang), remoteVer);
           return jsonDecode(bRes.body) as Map<String, dynamic>;
         }
       }
     } catch (e) {}
-    final cached = prefs.getString(_kJson(_lang));
+    final cached = prefs.getString(_kJson(lang));
     if (cached != null) {
       return jsonDecode(cached) as Map<String, dynamic>;
     }
-    if (_lang == 'hi') {
+    if (lang == 'hi') {
       return fallbackHi;
     }
     return fallbackEn;

@@ -1,7 +1,6 @@
 import 'package:assisted_living/responsive/responsive.dart';
 import 'package:assisted_living/services/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// A widget to display before the toolbar's [title].
@@ -84,7 +83,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actionsIconTheme:
           actionsIconTheme ??
           // IconThemeData(size: 24.sp, color: AppColors.btnTextColor),
-          IconThemeData(size: r.font(24), color: AppColors.btnTextColor),
+          IconThemeData(size: r.font(24), color: AppColors.whiteColor),
     );
   }
 }

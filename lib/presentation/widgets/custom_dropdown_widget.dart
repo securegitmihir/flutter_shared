@@ -1,11 +1,8 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:assisted_living/responsive/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../services/app_colors.dart';
 import '../../app/configuration/constants.dart';
-import '../../services/font_styles.dart';
+import '../../services/app_colors.dart';
 import '../../utilities/utility_functions.dart';
 import 'custom_text_widget.dart';
 import 'loading_indicator_widget.dart';
@@ -152,7 +149,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       ),
                   enabled: widget.enabled ?? false,
                   disabledDecoration: CustomDropdownDisabledDecoration(
-                    fillColor: AppColors.dropdownBorderColor,
+                    fillColor: AppColors.borderColor,
                     suffixIcon: widget.isDataLoading
                         // ? LoadingIndicatorWidget(size: 10.r)
                         ? LoadingIndicatorWidget(size: r.px(10))
@@ -174,7 +171,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       // width: 1.w,
                       width: r.px(1),
                       color: widget.showBorder
-                          ? AppColors.dropdownBorderColor
+                          ? AppColors.borderColor
                           : Colors.transparent,
                     ),
                   ),
@@ -199,14 +196,14 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       // width: 1.w,
                       width: r.px(1),
                       color: widget.showBorder
-                          ? AppColors.dropdownBorderColor
+                          ? AppColors.borderColor
                           : Colors.transparent,
                     ),
                     closedErrorBorder: Border.all(
                       // width: 1.w,
                       width: r.px(1),
                       color: widget.showBorder
-                          ? AppColors.dropdownBorderColor
+                          ? AppColors.borderColor
                           : Colors.transparent,
                     ),
                     closedBorderRadius:
@@ -226,7 +223,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                           widget.borderRadius ?? r.px(4),
                         ),
                         borderSide: const BorderSide(
-                          color: AppColors.dropdownBorderColor,
+                          color: AppColors.borderColor,
                         ),
                       ),
                     ),
